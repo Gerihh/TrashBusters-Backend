@@ -1,0 +1,134 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Events",
+    "dateExported": "2024-01-24T18:38:33.199Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "a542d757-1107-46b6-8906-d46583adcdfa",
+            "colId": "667c042f-a413-4afe-8eb1-52928a272b0d",
+            "containerId": "",
+            "name": "GET All Events",
+            "url": "{{URL}}/api/events",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2024-01-22T17:26:17.330Z",
+            "modified": "2024-01-22T17:29:25.720Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                },
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "72e22d41-e54a-4883-ad42-4e88e09097b1",
+            "colId": "667c042f-a413-4afe-8eb1-52928a272b0d",
+            "containerId": "",
+            "name": "CREATE New Event",
+            "url": "{{URL}}/api/events",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2024-01-22T17:28:47.646Z",
+            "modified": "2024-01-24T18:37:00.658Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                },
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"title\": \"Gettó kitisztítása\",\n    \"description\": \"Ne caedasa sdasdsds r aper am minus asdnes e daerfdt rtzsac est quibus dat Ex us asdsol uta wawea sdesi tecto odrtt.\",\n    \"date\": \"2024-02-13\",\n    \"location\": \"Ózd\",\n    \"participants\": 23,\n    \"active\": 1,\n    \"creatorId\": 11\n  }",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "6ca637b2-c067-4fbf-bd88-8c7cfd01b3e1",
+            "colId": "667c042f-a413-4afe-8eb1-52928a272b0d",
+            "containerId": "",
+            "name": "GET Event by ID",
+            "url": "{{URL}}/api/events/12",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2024-01-22T17:35:05.302Z",
+            "modified": "2024-01-22T17:35:42.163Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                },
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "5f8167d3-395c-4157-8ec6-120c1f06c494",
+            "colId": "667c042f-a413-4afe-8eb1-52928a272b0d",
+            "containerId": "",
+            "name": "UPDATE Event by ID",
+            "url": "{{URL}}/api/events/12",
+            "method": "PATCH",
+            "sortNum": 50000,
+            "created": "2024-01-22T17:38:00.321Z",
+            "modified": "2024-01-22T17:40:11.247Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                },
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"title\": \"Szemetes\",\n    \"date\": \"2004-12-08\",\n    \"location\": \"Győr\",\n    \"participants\": 1,\n    \"active\": 1,\n    \"creatorId\": 11\n  }",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "d0f2e79b-13c0-4d63-98f8-e0c571e4429f",
+            "colId": "667c042f-a413-4afe-8eb1-52928a272b0d",
+            "containerId": "",
+            "name": "DELETE Event by ID",
+            "url": "{{URL}}/api/events/11",
+            "method": "DELETE",
+            "sortNum": 60000,
+            "created": "2024-01-22T17:41:21.837Z",
+            "modified": "2024-01-22T18:29:42.362Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                },
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "tests": []
+        }
+    ]
+}
