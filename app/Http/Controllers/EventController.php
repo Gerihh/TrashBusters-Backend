@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class EventController extends Controller
 {
@@ -21,7 +23,7 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        $event = Event::create($request->only('title', 'description', 'location', 'place', 'date', 'creatorId'));
+        $event = Event::create($request->only(['title', 'description', 'location', 'place', 'date', 'time', 'creatorId']));
         return response()->json($event);
     }
 

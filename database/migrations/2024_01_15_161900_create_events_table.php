@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('description')->nullable();
             $table->date('date');
+            $table->time('time');
             $table->string('location');
             $table->string('place');
             $table->integer('participants')->default(0);
