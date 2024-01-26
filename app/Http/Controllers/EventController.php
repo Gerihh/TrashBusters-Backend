@@ -21,7 +21,7 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        $event = Event::create($request->only('title', 'description', 'location', 'date', 'creatorId'));
+        $event = Event::create($request->only('title', 'description', 'location', 'place', 'date', 'creatorId'));
         return response()->json($event);
     }
 
