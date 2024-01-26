@@ -3,7 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ParticipantController;
-use App\Http\Controllers\UploadController;
+use App\Http\Controllers\ProfilePictureController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,5 +35,3 @@ Route::group(['prefix' => 'auth'], function () {
 Route::apiResource('users', UserController::class);
 Route::apiResource('events', EventController::class);
 Route::apiResource('participants', ParticipantController::class);
-
-Route::post('upload', [UploadController::class, 'upload']);
