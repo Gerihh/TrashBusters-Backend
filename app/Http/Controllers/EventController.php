@@ -69,4 +69,15 @@ class EventController extends Controller
             return response()->json(['message' => 'Esemény törölve'], 200);
         }
     }
+
+    public function getEventByCreatorId(Request $request, $creatorId)
+    {
+        $events = Event::where('creatorId', $creatorId)->select('id', 'title', 'description', 'participants', 'location', 'place', 'date', 'time', 'creatorId')->get();
+        if ($events->isEmpty()) {
+            return response()->json(['message' => 'Nincs ilyen esemény'], 404);
+        } else {
+            return response()->json($events);
+        }
+
+    }
 }

@@ -14,4 +14,9 @@ class Participant extends Model
     protected $fillable = [
         'eventId', 'userId'
        ];
+
+       public function event()
+       {
+           return $this->belongsTo(Event::class, 'eventId'); // Adjust the foreign key if needed
+       }
 }

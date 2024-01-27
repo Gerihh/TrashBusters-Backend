@@ -35,3 +35,9 @@ Route::group(['prefix' => 'auth'], function () {
 Route::apiResource('users', UserController::class);
 Route::apiResource('events', EventController::class);
 Route::apiResource('participants', ParticipantController::class);
+
+Route::get('/event/participants/{eventId}', [ParticipantController::class, 'getByEventId']);
+Route::get('/participants/user/{userId}', [ParticipantController::class, 'getByUserId']);
+
+Route::get('/events/creator/{creatorId}', [EventController::class, 'getEventByCreatorId']);
+Route::get('/participants/events/joined/{userId}', [ParticipantController::class, 'eventsJoinedByUser']);

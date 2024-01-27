@@ -47,4 +47,43 @@ class ParticipantController extends Controller
     {
         //
     }
+
+    public function getByEventId(Request $request, $eventId)
+    {
+        $participants = Participant::where('eventId', $eventId)->get();
+        if ($participants->isEmpty()) {
+            return response()->json(['message' => 'Nincs ilyen esemény'], 404);
+        }
+        return response()->json($participants, 200);
+    }
+
+    public function getByUserId(Request $request, $userId)
+    {
+        $participants = Participant::where('userId', $userId)->get();
+        if ($participants->isEmpty()) {
+            return response()->json(['message' => 'Nincs ilyen résztvevő'], 404);
+        }
+        return response()->json($participants, 200);
+    }
+
+    public function eventsJoinedByUser(Request $request, $userId)
+    {
+        $participants = Participant::where('userId', $userId)
+        ->with(['event' => function ($query) {
+            // Select only the columns you need from the 'events' table
+            $query->select('id', 'title', 'description', 'participants', 'location', 'place', 'date', 'time', 'creatorId');
+        }])
+        ->get();
+
+    if ($participants->isEmpty()) {
+        return response()->json(['message' => 'User has not joined any events.'], 404);
+    }
+
+    // Extract only the 'event' data from each participant
+    $eventsJoinedByUser = $participants->map(function ($participant) {
+        return $participant->event;
+    });
+
+    return response()->json($eventsJoinedByUser);
+    }
 }
