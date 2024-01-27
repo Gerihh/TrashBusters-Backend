@@ -86,4 +86,11 @@ class ParticipantController extends Controller
 
     return response()->json($eventsJoinedByUser);
     }
+
+    public function pairExists($eventId, $userId)
+    {
+        $exists = Participant::where('eventId', $eventId)->where('userId', $userId)->exists();
+
+        return response()->json(['exists' => $exists], 200);
+    }
 }

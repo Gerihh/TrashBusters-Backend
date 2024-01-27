@@ -41,3 +41,5 @@ Route::get('/participants/user/{userId}', [ParticipantController::class, 'getByU
 
 Route::get('/events/creator/{creatorId}', [EventController::class, 'getEventByCreatorId']);
 Route::get('/participants/events/joined/{userId}', [ParticipantController::class, 'eventsJoinedByUser']);
+
+Route::get('/participants/check/{eventId}/{userId}', [ParticipantController::class,'pairExists']);
