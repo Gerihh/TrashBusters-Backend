@@ -43,3 +43,5 @@ Route::get('/events/creator/{creatorId}', [EventController::class, 'getEventByCr
 Route::get('/participants/events/joined/{userId}', [ParticipantController::class, 'eventsJoinedByUser']);
 
 Route::get('/participants/check/{eventId}/{userId}', [ParticipantController::class,'pairExists']);
+
+Route::delete('/participants/delete/{eventId}/{userId}', [ParticipantController::class, 'destroy']);

@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('participants', function (Blueprint $table) {
-            // $table->id();
             $table->foreignId('eventId')->references('id')->on('events')->onDelete('cascade');
             $table->foreignId('userId')->references('id')->on('users')->onDelete('cascade');
             $table->primary(['eventId', 'userId']);

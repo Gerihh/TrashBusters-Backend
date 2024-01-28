@@ -15,8 +15,14 @@ class Participant extends Model
         'eventId', 'userId'
        ];
 
-       public function event()
-       {
-           return $this->belongsTo(Event::class, 'eventId'); // Adjust the foreign key if needed
-       }
+
+
+    public function event()
+    {
+        return $this->belongsTo(Event::class, 'eventId', 'id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'userId', 'id');
+    }
 }

@@ -43,10 +43,26 @@ class ParticipantController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Participant $participant)
-    {
-        //
+    public function destroy($eventId, $userId)
+{
+    $participant = Participant::where([
+        'eventId' => $eventId,
+        'userId' => $userId,
+    ]);
+
+    // Check if the participant record exists
+    if ($participant === null) {
+        return response()->json(['message' => 'Participant not found'], 404);
     }
+
+    $deleted = $participant->delete();
+
+    if ($deleted) {
+        return response()->json(['message' => 'Participant deleted successfully'], 200);
+    } else {
+        return response()->json(['message' => 'Failed to delete participant'], 500);
+    }
+}
 
     public function getByEventId(Request $request, $eventId)
     {
