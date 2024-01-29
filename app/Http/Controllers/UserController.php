@@ -95,7 +95,7 @@ class UserController extends Controller
         $user = User::find($user->id);
 
         if (!$user) {
-            return response()->json(['message'=> 'No student found'], 404);
+            return response()->json(['message'=> 'No user found'], 404);
         } else {
             $user->delete();
             return response()->json(["message" => "Felhasználó törölve"], 200);

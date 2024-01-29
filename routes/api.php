@@ -45,3 +45,7 @@ Route::get('/participants/events/joined/{userId}', [ParticipantController::class
 Route::get('/participants/check/{eventId}/{userId}', [ParticipantController::class,'pairExists']);
 
 Route::delete('/participants/delete/{eventId}/{userId}', [ParticipantController::class, 'destroy']);
+
+Route::get(`/participants/user/{userId}/events`, [ParticipantController::class, 'getEventsByUser']);
+
+Route::patch('/events/{event}/participant-left', [EventController::class, 'decrementParticipants']);
