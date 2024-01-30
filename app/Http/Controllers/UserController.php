@@ -31,8 +31,6 @@ class UserController extends Controller
         return response()->json($user);
 }
 
-
-
     /**
      * Display the specified resource.
      */
