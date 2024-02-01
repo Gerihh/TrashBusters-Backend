@@ -39,7 +39,7 @@ class UserController extends Controller
         $user = User::find($user->id);
         if ($user == null) {
 
-            return response()->json(['message' => 'Nincs ilyen felhasználó'], 404);
+            return response()->json(['message' => 'Nincs ilyen azonosítójú felhasználó'], 404);
         } else {
             return response()->json($user);
         }
@@ -97,6 +97,17 @@ class UserController extends Controller
         } else {
             $user->delete();
             return response()->json(["message" => "Felhasználó törölve"], 200);
+        }
+    }
+
+    public function getUserByUsername($username)
+    {
+        $user = User::where('username', $username)->first();
+        if ($user == null) {
+
+            return response()->json(['message' => 'Nincs ilyen nevű felhasználó'], 404);
+        } else {
+            return response()->json($user);
         }
     }
 }

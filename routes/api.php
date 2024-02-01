@@ -49,3 +49,5 @@ Route::delete('/participants/delete/{eventId}/{userId}', [ParticipantController:
 Route::get(`/participants/user/{userId}/events`, [ParticipantController::class, 'getEventsByUser']);
 
 Route::patch('/events/{event}/participant-left', [EventController::class, 'decrementParticipants']);
+
+Route::get('/users/username/{username}', [UserController::class, 'getUserByUsername']);
