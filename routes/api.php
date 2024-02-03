@@ -3,7 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ParticipantController;
-use App\Http\Controllers\UploadController;
+use App\Http\Controllers\ProfilePictureController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,4 +36,18 @@ Route::apiResource('users', UserController::class);
 Route::apiResource('events', EventController::class);
 Route::apiResource('participants', ParticipantController::class);
 
-Route::post('upload', [UploadController::class, 'upload']);
+Route::get('/event/participants/{eventId}', [ParticipantController::class, 'getByEventId']);
+Route::get('/participants/user/{userId}', [ParticipantController::class, 'getByUserId']);
+
+Route::get('/events/creator/{creatorId}', [EventController::class, 'getEventByCreatorId']);
+Route::get('/participants/events/joined/{userId}', [ParticipantController::class, 'eventsJoinedByUser']);
+
+Route::get('/participants/check/{eventId}/{userId}', [ParticipantController::class,'pairExists']);
+
+Route::delete('/participants/delete/{eventId}/{userId}', [ParticipantController::class, 'destroy']);
+
+Route::get(`/participants/user/{userId}/events`, [ParticipantController::class, 'getEventsByUser']);
+
+Route::patch('/events/{event}/participant-left', [EventController::class, 'decrementParticipants']);
+
+Route::get('/users/username/{username}', [UserController::class, 'getUserByUsername']);

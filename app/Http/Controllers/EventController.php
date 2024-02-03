@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class EventController extends Controller
 {
@@ -21,7 +24,7 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        $event = Event::create($request->only('title', 'description', 'location', 'date', 'creatorId'));
+        $event = Event::create($request->only(['title', 'description', 'location', 'place', 'date', 'time', 'creatorId']));
         return response()->json($event);
     }
 
@@ -67,4 +70,23 @@ class EventController extends Controller
             return response()->json(['message' => 'Esemény törölve'], 200);
         }
     }
+
+    public function getEventByCreatorId(Request $request, $creatorId)
+    {
+        $events = Event::where('creatorId', $creatorId)->select('id', 'title', 'description', 'participants', 'location', 'place', 'date', 'time', 'creatorId')->get();
+        if ($events->isEmpty()) {
+            return response()->json(['message' => 'Nincs ilyen esemény'], 404);
+        } else {
+            return response()->json($events);
+        }
+    }
+
+    public function decrementParticipants(Event $event)
+{
+    // Assuming your events table has a 'participants' column
+    $event->decrement('participants');
+
+    return response()->json(['message' => 'Participant count decremented successfully']);
+}
+
 }

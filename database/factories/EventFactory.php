@@ -22,6 +22,7 @@ class EventFactory extends Factory
             "description"=> $this->faker->text,
             "date"=> $this->faker->date,
             "location"=> $this->faker->city,
+            "place"=> $this->faker->streetAddress,
             "participants"=> $this->faker->numberBetween(5, 100),
             "active"=> $this->faker->boolean,
             "creatorId"=> $this->faker->randomElement(User::pluck('id')),

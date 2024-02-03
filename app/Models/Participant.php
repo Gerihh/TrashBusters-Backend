@@ -14,4 +14,15 @@ class Participant extends Model
     protected $fillable = [
         'eventId', 'userId'
        ];
+
+
+
+    public function event()
+    {
+        return $this->belongsTo(Event::class, 'eventId', 'id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'userId', 'id');
+    }
 }
