@@ -51,3 +51,7 @@ Route::get(`/participants/user/{userId}/events`, [ParticipantController::class, 
 Route::patch('/events/{event}/participant-left', [EventController::class, 'decrementParticipants']);
 
 Route::get('/users/username/{username}', [UserController::class, 'getUserByUsername']);
+
+Route::get('event/most-participants', [EventController::class, 'getEventWithMostParticipants']);
+
+Route::get('/event/latest', [EventController::class, 'getLatestEvent']);

@@ -89,4 +89,18 @@ class EventController extends Controller
     return response()->json(['message' => 'Participant count decremented successfully']);
 }
 
+    public function getEventWithMostParticipants()
+    {
+        $event = Event::orderBy('participants', 'desc')->first();
+
+        return response()->json($event);
+    }
+
+    public function getLatestEvent()
+    {
+        $event = Event::orderBy('id', 'desc')->first();
+
+        return response()->json($event);
+    }
+
 }
