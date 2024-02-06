@@ -103,4 +103,11 @@ class EventController extends Controller
         return response()->json($event);
     }
 
+    public function getClosestEvent()
+    {
+        $event = Event::orderBy('date', 'asc')->first();
+
+        return response()->json($event);
+    }
+
 }

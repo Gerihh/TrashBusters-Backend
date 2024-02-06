@@ -55,3 +55,5 @@ Route::get('/users/username/{username}', [UserController::class, 'getUserByUsern
 Route::get('event/most-participants', [EventController::class, 'getEventWithMostParticipants']);
 
 Route::get('/event/latest', [EventController::class, 'getLatestEvent']);
+
+Route::get('/event/closest', [EventController::class, 'getClosestEvent']);;
