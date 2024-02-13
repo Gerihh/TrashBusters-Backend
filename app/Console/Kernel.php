@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->call(function () {
             Event::where(DB::raw("CONCAT(date, ' ', time)"), '<', now()->toDateTimeString())->delete();
-        })->everyThirtySeconds();
+        })->everySecond();
     }
 
     /**
