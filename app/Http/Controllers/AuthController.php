@@ -4,21 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\NewUserRequest;
+use App\Mail\VerificationEmail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
     public function register(NewUserRequest $request)
     {
         //Validálás
+        $verificationToken = Str::random(32);
 
         $data = $request->validated();
         $data['password'] = bcrypt($request->password);
+        $data['verificationToken'] = $verificationToken;
+        $data['isVerified'] = false;
         $user = User::create($data);
         //Token kreálás
         $token = $user->createToken('authToken')->accessToken;
+
+        $this->sendVerificationEmail($user);
 
 
         return response()->json([
@@ -67,5 +75,12 @@ class AuthController extends Controller
     public function user()
     {
 
+    }
+
+    public function sendVerificationEmail($user)
+    {
+        $verificationLink = route('verify.email', ['token' => $user->verificationToken]);
+
+        Mail::to($user->email)->send(new VerificationEmail($verificationLink));
     }
 }
