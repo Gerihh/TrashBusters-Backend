@@ -44,13 +44,22 @@ class AuthController extends Controller
             // Authenticated user
             $user = Auth::user();
 
-            //Token
-            $token = $user->createToken('authToken')->accessToken;
+            if ($user->isVerified) {
+                $token = $user->createToken('authToken')->accessToken;
 
-            return response()->json([
-                'user' => $user,
-                'accessToken' => $token,
-            ]);
+                return response()->json([
+                    'user' => $user,
+                    'accessToken' => $token,
+                ]);
+
+            }
+            else {
+                Auth::logout();
+                return response()->json([
+                    'error' => 'Még nem erősítette meg a felhasználóját!',
+                    'user' => $user,
+                ], 401);
+            }
         }
 
         //Autentikációs hiba
