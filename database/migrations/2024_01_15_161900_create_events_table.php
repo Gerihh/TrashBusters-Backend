@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('location');
             $table->string('place');
             $table->integer('participants')->default(0);
-            $table->boolean('active')->default(true);
             $table->foreignId('creatorId')->references('id')->on('users')->onDelete('cascade');
         });
     }

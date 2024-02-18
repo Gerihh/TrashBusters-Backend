@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 class Event extends Model
 {
     use HasFactory;
@@ -12,6 +11,6 @@ class Event extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'title', 'description', 'date', 'time', 'location', 'place', 'participants', 'active', 'creatorId'
+        'title', 'description', 'date', 'time', 'location', 'place', 'participants', 'creatorId'
        ];
 }
