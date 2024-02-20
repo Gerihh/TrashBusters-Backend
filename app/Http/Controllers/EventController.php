@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 
 class EventController extends Controller
@@ -71,10 +72,21 @@ class EventController extends Controller
     }
 
     public function getEventByCreatorId(Request $request, $creatorId)
-    {
-        $events = Event::where('creatorId', $creatorId)->select('id', 'title', 'description', 'participants', 'location', 'place', 'date', 'time', 'creatorId')->get();
-        return response()->json($events);
+{
+    $validator = Validator::make(['creatorId' => $creatorId], [
+        'creatorId' => 'integer|exists:users,id',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json(['error' => 'Nincs ilyen felhasználó'], 400);
     }
+
+    $events = Event::where('creatorId', $creatorId)
+        ->select('id', 'title', 'description', 'participants', 'location', 'place', 'date', 'time', 'creatorId')
+        ->get();
+
+    return response()->json($events);
+}
 
     public function decrementParticipants(Event $event)
 {
