@@ -91,11 +91,6 @@ class ParticipantController extends Controller
             $query->select('id', 'title', 'description', 'participants', 'location', 'place', 'date', 'time', 'creatorId');
         }])
         ->get();
-
-    if ($participants->isEmpty()) {
-        return response()->json(['message' => 'User has not joined any events.'], 404);
-    }
-
     // Extract only the 'event' data from each participant
     $eventsJoinedByUser = $participants->map(function ($participant) {
         return $participant->event;
