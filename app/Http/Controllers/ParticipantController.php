@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Participant;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ParticipantController extends Controller
 {
@@ -84,25 +85,50 @@ class ParticipantController extends Controller
     }
 
     public function eventsJoinedByUser(Request $request, $userId)
-    {
-        $participants = Participant::where('userId', $userId)
+{
+    $validator = Validator::make(['userId' => $userId], [
+        'userId' => 'integer|exists:users,id',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json(['error' => 'Nincs ilyen felhasználó'], 400);
+    }
+
+    $participants = Participant::where('userId', $userId)
         ->with(['event' => function ($query) {
-            // Select only the columns you need from the 'events' table
             $query->select('id', 'title', 'description', 'participants', 'location', 'place', 'date', 'time', 'creatorId');
         }])
         ->get();
-    // Extract only the 'event' data from each participant
+
     $eventsJoinedByUser = $participants->map(function ($participant) {
         return $participant->event;
     });
 
     return response()->json($eventsJoinedByUser);
+}
+public function pairExists($eventId, $userId)
+{
+    // Validate that $userId is a valid integer
+    $validator = Validator::make(['userId' => $userId], [
+        'userId' => 'integer|exists:users,id',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json(['error' => 'Invalid userId'], 400);
     }
 
-    public function pairExists($eventId, $userId)
-    {
-        $exists = Participant::where('eventId', $eventId)->where('userId', $userId)->exists();
+    // Validate that $eventId is a valid integer
+    $validator = Validator::make(['eventId' => $eventId], [
+        'eventId' => 'integer|exists:events,id',
+    ]);
 
-        return response()->json(['exists' => $exists], 200);
+    if ($validator->fails()) {
+        return response()->json(['error' => 'Invalid eventId'], 400);
     }
+
+    // If validation passes, proceed with checking if the pair exists
+    $exists = Participant::where('eventId', $eventId)->where('userId', $userId)->exists();
+
+    return response()->json(['exists' => $exists], 200);
+}
 }
