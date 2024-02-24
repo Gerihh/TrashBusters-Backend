@@ -9,15 +9,21 @@ class ProfilePictureController extends Controller
 {
     public function upload(Request $request)
     {
-        if ($request->hasFile('profilePicture')) {
-            $request->validate([
-                'profilePicture' =>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            ]);
-            $file = $request->file('profilePicture');
-            $fileName = uniqid() . '_' . $file->getClientOriginalName();
-            $url = Storage::disk('s3')->url('profile_pictures/' . $fileName);
+        $request->validate([
+            'profilePicture' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
 
-            return response()->json(['message' => 'File successfully uploaded', 'path' => $url], 201);
+        if ($request->hasFile('profilePicture')) {
+            $image = $request->file('profilePicture');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+
+            Storage::put($imageName, $image);
+
+            $path = Storage::url($imageName);
+
+            return response()->json(['message' => 'File uploaded successfully', 'path' => $path], 200);
+        } else {
+            return response()->json(['message' => 'No file was uploaded'], 400);
         }
     }
 }
