@@ -55,3 +55,5 @@ Route::get('event/most-participants', [EventController::class, 'getEventWithMost
 Route::get('/event/latest', [EventController::class, 'getLatestEvent']);
 
 Route::get('/event/closest', [EventController::class, 'getClosestEvent']);;
+
+Route::post('/upload', [ProfilePictureController::class, 'upload']);
