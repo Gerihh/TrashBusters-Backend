@@ -46,15 +46,14 @@ return [
 
         's3' => [
             'driver' => 's3',
-            'key' => env('AWS_ACCESS_KEY_ID', 'AKIA3YMYO5Z6RGFDSJCG'),
-            'secret' => env('AWS_SECRET_ACCESS_KEY', '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'),
-            'region' => env('AWS_DEFAULT_REGION', 'eu-central-1'),
-            'bucket' => env('AWS_BUCKET', 'trashbusters'),
-            'url' => env('AWS_URL', 'https://trashbusters.s3.eu-central-1.amazonaws.com'),
-            'endpoint' => env('AWS_ENDPOINT', null),
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION'),
+            'bucket' => env('AWS_BUCKET'),
+            'url' => env('AWS_URL'),
+            'throw' => false,
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'visibility' => 'public',
-            //'scheme' => 'http'
+            'scheme' => 'http'
         ],
 
     ],

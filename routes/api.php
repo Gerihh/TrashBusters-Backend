@@ -56,4 +56,4 @@ Route::get('/event/latest', [EventController::class, 'getLatestEvent']);
 
 Route::get('/event/closest', [EventController::class, 'getClosestEvent']);;
 
-Route::post('/upload', [ProfilePictureController::class, 'upload']);
+Route::post('/upload/{userId}', [ProfilePictureController::class, 'upload']);
