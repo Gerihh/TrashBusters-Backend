@@ -12,7 +12,8 @@ class DumpController extends Controller
      */
     public function index()
     {
-        //
+        $dumps = Dump::all();
+        return response()->json($dumps);
     }
 
     /**
@@ -20,7 +21,8 @@ class DumpController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $dump = Dump::create($request->all());
+        return response()->json($dump, 201);
     }
 
     /**

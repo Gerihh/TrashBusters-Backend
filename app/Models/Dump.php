@@ -10,4 +10,8 @@ class Dump extends Model
     use HasFactory;
 
     public $timestamps = false;
+
+    protected $fillable = [
+        'name', 'description', 'location', 'contactPhone', 'contactEmail'
+    ];
 }

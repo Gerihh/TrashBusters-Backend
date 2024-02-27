@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DumpController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ParticipantController;
 use App\Http\Controllers\ProfilePictureController;
@@ -35,6 +36,7 @@ Route::group(['prefix' => 'auth'], function () {
 Route::apiResource('users', UserController::class);
 Route::apiResource('events', EventController::class);
 Route::apiResource('participants', ParticipantController::class);
+Route::apiResource('dumps', DumpController::class);
 
 Route::get('/event/participants/{eventId}', [ParticipantController::class, 'getByEventId']);
 Route::get('/participants/user/{userId}', [ParticipantController::class, 'getByUserId']);

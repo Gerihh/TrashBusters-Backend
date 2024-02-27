@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->string('location');
-            $table->time('openingHours');
             $table->string('contactPhone');
             $table->string('contactEmail');
         });
