@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Dump;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class DumpController extends Controller
 {
@@ -47,5 +48,19 @@ class DumpController extends Controller
     public function destroy(Dump $dump)
     {
         //
+    }
+
+    public function getDumpNameById(Request $request, $dumpId)
+    {
+        $validator = Validator::make(['dumpId' => $dumpId], [
+            'dumpId' => 'integer|exists:dumps,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => 'Nincs lerakó ilyen azonosítóval'], 400);
+        }
+
+        $dump = Dump::find($dumpId);
+        return response()->json($dump->name);
     }
 }

@@ -59,3 +59,5 @@ Route::get('/event/latest', [EventController::class, 'getLatestEvent']);
 Route::get('/event/closest', [EventController::class, 'getClosestEvent']);;
 
 Route::post('/upload/{userId}', [ProfilePictureController::class, 'upload']);
+
+Route::get('/dump/name/{dumpId}', [DumpController::class, 'getDumpNameById']);
