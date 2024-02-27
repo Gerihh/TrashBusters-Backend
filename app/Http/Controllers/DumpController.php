@@ -47,7 +47,14 @@ class DumpController extends Controller
      */
     public function destroy(Dump $dump)
     {
-        //
+        $dump = Dump::find($dump->id);
+
+        if ($dump == null) {
+            return response()->json(['message' => 'Nincs ilyen lerakó'], 404);
+        } else {
+            $dump->delete();
+            return response()->json(['message' => 'Sikeres törlés'], 200);
+        }
     }
 
     public function getDumpNameById(Request $request, $dumpId)
