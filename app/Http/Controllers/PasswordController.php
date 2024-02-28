@@ -13,19 +13,45 @@ class PasswordController extends Controller
     {
         try {
             $user = User::find($userId->id);
-            $oldPassword = $request->input('oldpassword');
-            $newPassword = $request->input('newpassword');
+            $oldPassword = $request->input('oldPassword');
+            $newPassword = $request->input('newPassword');
+            $newPasswordAgain = $request->input('newPasswordAgain');
 
-            // Check if the old password matches the stored hashed password
+
+            $validator = Validator::make(
+                ['newPassword' => $newPassword],
+                [
+                    'newPassword' => 'required|min:8|regex:/^(?=.*[A-Z])(?=.*[0-9])/',
+                ],
+                [
+                    'newPassword.required' => 'Jelszó megadása kötelező',
+                    'newPassword.min' => 'A jelszónak legalább 8 karakterből kell állnia',
+                    'newPassword.regex' => 'A jelszónak legalább egy nagybetűt és egy számot kell tartalmaznia'
+                ]
+            );
+
+            if ($validator->fails()) {
+                // Validation failed
+                return response()->json(['error' => $validator->errors()->first()], 400);
+            }
+
+
             if (Hash::check($oldPassword, $user->password)) {
-                // Old password matches, proceed with changing the password
-                $user->password = bcrypt($newPassword);
-                $user->save();
 
-                return response()->json(['message' => 'Password changed successfully']);
+                if ($newPassword == $newPasswordAgain) {
+                    if ($newPassword != $oldPassword) {
+                        $user->password = bcrypt($newPassword);
+                        $user->save();
+
+                        return response()->json(['message' => 'Jelszó sikeresen megváltoztatva!'], 200);
+                    } else {
+                        return response()->json(['error' => 'Az új jelszó nem egyezhet a régivel!'], 400);
+                    }
+                } else {
+                    return response()->json(['error' => 'Az új jelszavak nem egyeznek!'], 400);
+                }
             } else {
-                // Old password does not match
-                return response()->json(['error' => 'Incorrect old password'], 400);
+                return response()->json(['error' => 'Helytelen régi jelszó!'], 400);
             }
         } catch (\Exception $error) {
             return response()->json(['error' => 'Internal Server Error'], 500);
