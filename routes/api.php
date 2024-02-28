@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DumpController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ParticipantController;
+use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ProfilePictureController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -61,3 +62,5 @@ Route::get('/event/closest', [EventController::class, 'getClosestEvent']);;
 Route::post('/upload/{userId}', [ProfilePictureController::class, 'upload']);
 
 Route::get('/dump/name/{dumpId}', [DumpController::class, 'getDumpNameById']);
+
+Route::post('/change-password/{userId}', [PasswordController::class, 'changePassword']);
