@@ -6,8 +6,10 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class PasswordController extends Controller
+
 {
     public function changePassword(Request $request, User $userId)
     {
@@ -56,5 +58,22 @@ class PasswordController extends Controller
         } catch (\Exception $error) {
             return response()->json(['error' => 'Internal Server Error'], 500);
         }
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $user = User::where('email', $request->input('email'))->first();
+
+        if (!$user) {
+            return response()->json(['error' => 'Nincs regisztrált fiók ezzel az email-lel'], 404);
+        }
+
+        $token = Str::random(60);
+
+        $user->update(['passwordResetToken' => $token]);
+
+        (new MailController())->sendPasswordResetEmail($user);
+
+        return response()->json(['message' => 'Email elküldve!'], 200);
     }
 }

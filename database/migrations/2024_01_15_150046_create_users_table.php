@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('profilePictureURL')->nullable()->default('profile_pictures/no-profile-picture.jpg');
             $table->string('verificationToken')->nullable();
             $table->boolean('isVerified')->default(false);
+            $table->string('passwordResetToken')->nullable();
         });
     }
 

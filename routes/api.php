@@ -64,3 +64,5 @@ Route::post('/upload/{userId}', [ProfilePictureController::class, 'upload']);
 Route::get('/dump/name/{dumpId}', [DumpController::class, 'getDumpNameById']);
 
 Route::post('/change-password/{userId}', [PasswordController::class, 'changePassword']);
+
+Route::post('/reset-password', [PasswordController::class,'resetPassword'])->name('reset.password');

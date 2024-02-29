@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PasswordResetEmail;
 use App\Mail\VerificationEmail;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
@@ -26,5 +27,12 @@ class MailController extends Controller
         } else {
             return view('email-verification.invalid');
         }
+    }
+
+    public function sendPasswordResetEmail($user)
+    {
+        $resetLink = route('reset.password', ['token' => $user->resetPasswordToken]);
+
+        Mail::to($user->email)->send(new PasswordResetEmail($resetLink));
     }
 }

@@ -17,3 +17,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/verify-email/{token}', [MailController::class, 'verifyEmail'])->name('verify.email');
 
 
+
