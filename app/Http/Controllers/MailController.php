@@ -31,8 +31,19 @@ class MailController extends Controller
 
     public function sendPasswordResetEmail($user)
     {
-        $resetLink = route('reset.password', ['token' => $user->resetPasswordToken]);
+        $resetLink = route('reset.password', ['token' => $user->passwordResetToken]);
 
         Mail::to($user->email)->send(new PasswordResetEmail($resetLink));
+    }
+
+    public function resetPassword($token)
+    {
+        $user = User::where('passwordResetToken', $token)->first();
+
+        if ($user) {
+            return redirect()->away('http://localhost:9000/#/password-recovery/' . $user->passwordResetToken);
+        } else {
+            return view('email-verification.invalid');
+        }
     }
 }

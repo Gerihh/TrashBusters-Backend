@@ -65,4 +65,6 @@ Route::get('/dump/name/{dumpId}', [DumpController::class, 'getDumpNameById']);
 
 Route::post('/change-password/{userId}', [PasswordController::class, 'changePassword']);
 
-Route::post('/reset-password', [PasswordController::class,'resetPassword'])->name('reset.password');
+Route::post('/reset-password', [PasswordController::class,'resetPassword'])->name('reset.password.email');
+
+Route::get('/user/password-reset-token/{token}', [PasswordController::class, 'getUserByResetToken']);

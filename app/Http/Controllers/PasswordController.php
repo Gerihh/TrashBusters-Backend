@@ -63,17 +63,26 @@ class PasswordController extends Controller
     public function resetPassword(Request $request)
     {
         $user = User::where('email', $request->input('email'))->first();
+        $token = Str::random(32);
 
         if (!$user) {
             return response()->json(['error' => 'Nincs regisztrált fiók ezzel az email-lel'], 404);
         }
-
-        $token = Str::random(60);
-
         $user->update(['passwordResetToken' => $token]);
 
         (new MailController())->sendPasswordResetEmail($user);
 
         return response()->json(['message' => 'Email elküldve!'], 200);
+    }
+
+    public function getUserByResetToken($token)
+    {
+        $user = User::where('passwordResetToken', $token)->first();
+
+        if (!$user) {
+            return response()->json(['error' => 'Nincs ilyen token'], 404);
+        }
+
+        return response()->json(['id' => $user->id], 200);
     }
 }
