@@ -7,6 +7,6 @@
 </head>
 <body>
     <p>Click the following link to reset your password:</p>
-    <button onclick="window.location.href='{{ $resetLink }}'">Reset Password</button>
+    <button><a href="{{$resetLink}}">Reset Password</a></button>
 </body>
 </html>

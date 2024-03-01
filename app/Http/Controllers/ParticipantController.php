@@ -135,13 +135,13 @@ class ParticipantController extends Controller
     {
         $participants = Participant::with('user')->where('eventId', $eventId)->get();
 
-        if ($participants->isEmpty()) {
-            return response()->json(['message' => 'Nincsenek résztvevők ehhez az eseményhez'], 404);
-        }
-
-        // Assuming you have a 'user' relationship in the Participant model
         $users = $participants->pluck('user');
 
-        return response()->json($users, 200);
+        $response = [
+            'users' => $users,
+            'count' => $participants->count(),
+        ];
+
+        return response()->json($response, 200);
     }
 }

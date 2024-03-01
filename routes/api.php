@@ -27,10 +27,6 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::get('user', [AuthController::class, 'user']);
-
-    Route::middleware('auth:api')->group(function () {
-
-    });
 });
 
 
@@ -45,7 +41,7 @@ Route::get('/participants/user/{userId}', [ParticipantController::class, 'getByU
 Route::get('/events/creator/{creatorId}', [EventController::class, 'getEventByCreatorId']);
 Route::get('/participants/events/joined/{userId}', [ParticipantController::class, 'eventsJoinedByUser']);
 
-Route::get('/participants/check/{eventId}/{userId}', [ParticipantController::class,'pairExists']);
+Route::get('/participants/check/{eventId}/{userId}', [ParticipantController::class, 'pairExists']);
 
 Route::delete('/participants/delete/{eventId}/{userId}', [ParticipantController::class, 'destroy']);
 
@@ -53,7 +49,7 @@ Route::patch('/events/{event}/participant-left', [EventController::class, 'decre
 
 Route::get('/users/username/{username}', [UserController::class, 'getUserByUsername']);
 
-Route::get('event/most-participants', [EventController::class, 'getEventWithMostParticipants']);
+Route::get('/event/most-participants', [EventController::class, 'getEventWithMostParticipants']);
 
 Route::get('/event/latest', [EventController::class, 'getLatestEvent']);
 
@@ -65,7 +61,7 @@ Route::get('/dump/name/{dumpId}', [DumpController::class, 'getDumpNameById']);
 
 Route::post('/change-password/{userId}', [PasswordController::class, 'changePassword']);
 
-Route::post('/reset-password', [PasswordController::class,'resetPassword'])->name('reset.password.email');
+Route::post('/reset-password', [PasswordController::class, 'resetPassword'])->name('reset.password.email');
 
 Route::get('/user/password-reset-token/{token}', [PasswordController::class, 'getUserByResetToken']);
 
