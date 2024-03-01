@@ -76,7 +76,7 @@ class UserController extends Controller
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return response ()->json($errors, 400);
+            return response ()->json(['error' => $errors], 400);
         } else {
             $request['password'] = bcrypt($request->password);
             $user->update($request->all());
