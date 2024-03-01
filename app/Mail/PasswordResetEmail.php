@@ -28,7 +28,7 @@ class PasswordResetEmail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Password Reset Email')->view('emails.password-reset');
+        return $this->subject('Elfelejett jelszó')->view('emails.password-reset');
     }
 
     /**
@@ -37,7 +37,7 @@ class PasswordResetEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Password Reset Email',
+            subject: 'Elfelejett jelszó',
         );
     }
 

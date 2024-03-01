@@ -29,7 +29,7 @@ class VerificationEmail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Verification Email')->view('emails.verification');
+        return $this->subject('Fiók megerősítése')->view('emails.verification');
     }
 
     /**
@@ -38,7 +38,7 @@ class VerificationEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Verification Email',
+            subject: 'Fiók megerősítése',
         );
     }
 
