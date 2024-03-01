@@ -68,3 +68,5 @@ Route::post('/change-password/{userId}', [PasswordController::class, 'changePass
 Route::post('/reset-password', [PasswordController::class,'resetPassword'])->name('reset.password.email');
 
 Route::get('/user/password-reset-token/{token}', [PasswordController::class, 'getUserByResetToken']);
+
+Route::get('/participants/event/{eventId}', [ParticipantController::class, 'getParticipantsByEventId']);
