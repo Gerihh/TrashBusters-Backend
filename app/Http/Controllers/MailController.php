@@ -18,12 +18,13 @@ class MailController extends Controller
     public function verifyEmail($token)
     {
         $user = User::where('verificationToken', $token)->first();
+        $URL = env('APP_URL');
 
         if ($user) {
             // Update user status to indicate verification
             $user->update(['isVerified' => true, 'verificationToken' => null]);
 
-            return redirect()->away('http://localhost:9000/#/login');
+            return redirect()->away($URL . ':9000/#/login');
         } else {
             return view('email-verification.invalid');
         }
@@ -39,9 +40,9 @@ class MailController extends Controller
     public function resetPassword($token)
     {
         $user = User::where('passwordResetToken', $token)->first();
-
+        $URL = env('APP_URL');
         if ($user) {
-            return redirect()->away('http://localhost:9000/#/password-recovery/' . $user->passwordResetToken);
+            return redirect()->away($URL . ':9000/#/password-recovery/' . $user->passwordResetToken);
         } else {
             return view('email-verification.invalid');
         }
