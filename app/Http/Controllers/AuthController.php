@@ -69,20 +69,9 @@ class AuthController extends Controller
 
     public function logout()
     {
-        /*Auth::user()->token()->revoke();
-
-        return response()->json(['message' => 'Sikeres kijelentkezés'], 200);*/
 
         Auth::logout();
         return response()->json(['message' => 'Sikeres kijelentkezés'], 200);
-    }
-    public function refresh()
-    {
-
-    }
-    public function user()
-    {
-
     }
 
     public function sendVerificationEmail($user)

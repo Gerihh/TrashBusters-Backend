@@ -16,6 +16,6 @@ class User extends Authenticatable
    public $timestamps = false;
 
    protected $fillable = [
-    'username','email','password','profilePictureURL', 'verificationToken', 'isVerified', 'passwordResetToken',
+    'username','email', 'city', 'password', 'profilePictureURL', 'verificationToken', 'isVerified', 'passwordResetToken',
    ];
 }

@@ -25,6 +25,7 @@ class NewUserRequest extends FormRequest
 
                 'username' =>'required|unique:users|min:6',
                 'email' => 'required|email|unique:users',
+                'city' =>'required',
                 'password' => 'required|string|min:8|regex:/^(?=.*[A-Z])(?=.*[0-9])/'
         ];
     }
@@ -38,6 +39,7 @@ class NewUserRequest extends FormRequest
             'email.required' => 'E-mail cím megadása kötelező',
             'email.email' => 'Érvénytelen e-mail cím',
             'email.unique' => 'A megadott e-mail cím már foglalt',
+            'city.required' => 'A város megadása kötelező',
             'password.required' => 'Jelszó megadása kötelező',
             'password.string' => 'A jelszónak karaktereket kell tartalmaznia',
             'password.min' => 'A jelszónak legalább 8 karakterből kell állnia',
