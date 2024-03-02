@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\NewUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -108,6 +109,26 @@ class UserController extends Controller
             return response()->json(['message' => 'Nincs ilyen nevű felhasználó'], 404);
         } else {
             return response()->json($user);
+        }
+    }
+
+    public function verifyDeletion(Request $request)
+    {
+        $userId = $request->input('userId');
+        $enteredCode = $request->input('enteredCode');
+
+        $user = User::find($userId);
+
+        if (!$user) {
+            return response()->json(['message' => 'Nincs ilyen felhasználó'], 404);
+        }
+
+        $storedCode = Cache::get('deletion_code_' . $user->id);
+
+        if ($enteredCode === $storedCode) {
+            return response()->json(['message' => 'A kód helyes!'], 200);
+        } else {
+            return response()->json(['message' => 'A megadott kód nem megfelelő!'], 400);
         }
     }
 }

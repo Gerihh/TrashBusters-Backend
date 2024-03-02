@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DumpController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\ParticipantController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ProfilePictureController;
@@ -66,3 +67,7 @@ Route::post('/reset-password', [PasswordController::class, 'resetPassword'])->na
 Route::get('/user/password-reset-token/{token}', [PasswordController::class, 'getUserByResetToken']);
 
 Route::get('/participants/event/{eventId}', [ParticipantController::class, 'getParticipantsByEventId']);
+
+Route::get('/profile-deletion-email/{userId}', [MailController::class, 'sendProfileDeletionCodeEmail'])->name('profile.deletion');
+
+Route::post('/verify-deletion-code', [UserController::class, 'verifyDeletion']);

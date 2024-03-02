@@ -25,8 +25,8 @@ class AuthController extends Controller
         //Token kreálás
         $token = $user->createToken('authToken')->accessToken;
 
-        $this->sendVerificationEmail($user);
-
+        //$this->sendVerificationEmail($user);
+        (new MailController)->sendVerificationEmail($user);
 
         return response()->json([
             'user' => $user,
@@ -72,12 +72,5 @@ class AuthController extends Controller
 
         Auth::logout();
         return response()->json(['message' => 'Sikeres kijelentkezés'], 200);
-    }
-
-    public function sendVerificationEmail($user)
-    {
-        $verificationLink = route('verify.email', ['token' => $user->verificationToken]);
-
-        Mail::to($user->email)->send(new VerificationEmail($verificationLink));
     }
 }

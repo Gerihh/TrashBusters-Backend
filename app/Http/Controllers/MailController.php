@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Mail\PasswordResetEmail;
+use App\Mail\ProfileDeletionEmail;
 use App\Mail\VerificationEmail;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class MailController extends Controller
 {
@@ -47,4 +50,23 @@ class MailController extends Controller
             return view('email-verification.invalid');
         }
     }
+
+    public function sendProfileDeletionCodeEmail($userId)
+{
+    $user = User::find($userId);
+
+    if (!$user) {
+        // Handle the case where the user with the given ID is not found
+        return response()->json(['message' => 'User not found.'], 404);
+    }
+
+    $deletionCode = strtoupper(Str::random(6, 'alnum'));
+
+    Cache::put('deletion_code_' . $user->id, $deletionCode, now()->addMinutes(10));
+
+    Mail::to($user->email)->send(new ProfileDeletionEmail($user, $deletionCode));
+
+    return response()->json(['message' => 'Email elküldve!'], 200);
+}
+
 }
