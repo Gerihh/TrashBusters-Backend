@@ -15,5 +15,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/verify-email/{token}', [MailController::class, 'verifyEmail'])->name('verify.email');
+Route::get('/reset-password/{token}', [MailController::class,'resetPassword'])->name('reset.password');
+
+
+
 
 

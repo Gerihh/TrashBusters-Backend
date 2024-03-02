@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email megerősítése</title>
+    <title>Jelszó visszaállítása</title>
     <style>
         body {
             display: flex;
@@ -17,7 +17,7 @@
             text-align: center;
         }
 
-        .verification-link {
+        .reset-link {
             background-color: #7CB432; /* Green */
             border: none;
             color: white;
@@ -33,8 +33,8 @@
 </head>
 <body>
     <div class="container">
-        <p>Kattintson az alábbi gombra, hogy megerősítse a fiókját!</p>
-        <a class="verification-link" href="{{ $verificationLink }}">Fiók megerősítése</a>
+        <p>Kattintson az alábbi gombra, hogy helyreállítsa a jelszavát!</p>
+        <a class="reset-link" href="{{ $resetLink }}">Jelszó helyreállítása</a>
     </div>
 </body>
 </html>

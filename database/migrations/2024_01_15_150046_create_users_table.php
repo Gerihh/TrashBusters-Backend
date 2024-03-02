@@ -15,10 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('username')->unique();
             $table->string('email')->unique();
+            $table->string('city');
             $table->string('password')->default('');
             $table->string('profilePictureURL')->nullable()->default('profile_pictures/no-profile-picture.jpg');
             $table->string('verificationToken')->nullable();
             $table->boolean('isVerified')->default(false);
+            $table->string('passwordResetToken')->nullable();
         });
     }
 

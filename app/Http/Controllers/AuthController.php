@@ -6,7 +6,6 @@ use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\NewUserRequest;
 use App\Mail\VerificationEmail;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -70,20 +69,9 @@ class AuthController extends Controller
 
     public function logout()
     {
-        /*Auth::user()->token()->revoke();
-
-        return response()->json(['message' => 'Sikeres kijelentkezés'], 200);*/
 
         Auth::logout();
         return response()->json(['message' => 'Sikeres kijelentkezés'], 200);
-    }
-    public function refresh()
-    {
-
-    }
-    public function user()
-    {
-
     }
 
     public function sendVerificationEmail($user)

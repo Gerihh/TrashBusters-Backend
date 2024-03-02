@@ -8,28 +8,27 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class VerificationEmail extends Mailable
+class PasswordResetEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $verificationLink;
+    public $resetLink;
     /**
      * Create a new message instance.
-     * @param string $verificationLink
      */
-    public function __construct($verificationLink)
+    public function __construct($resetLink)
     {
-        $this->verificationLink = $verificationLink;
+        $this->resetLink = $resetLink;
     }
 
-    /**
+     /**
      * Build the message.
      *
      * @return $this
      */
     public function build()
     {
-        return $this->subject('Fiók megerősítése')->view('emails.verification');
+        return $this->subject('Elfelejett jelszó')->view('emails.password-reset');
     }
 
     /**
@@ -38,7 +37,7 @@ class VerificationEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Fiók megerősítése',
+            subject: 'Elfelejett jelszó',
         );
     }
 
@@ -48,7 +47,7 @@ class VerificationEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.verification',
+            view: 'emails.password-reset',
         );
     }
 

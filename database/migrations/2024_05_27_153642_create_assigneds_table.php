@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('dumps', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('description')->nullable();
-            $table->string('location');
-            $table->string('contactPhone');
-            $table->string('contactEmail');
+        Schema::create('assigneds', function (Blueprint $table) {
+            $table->foreignId('eventId')->references('id')->on('events')->onDelete('cascade');
+            $table->foreignId('dumpId')->references('id')->on('dumps')->onDelete('cascade');
+            $table->primary('eventId');
         });
     }
 
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('dumps');
+        Schema::dropIfExists('assigneds');
     }
 };
