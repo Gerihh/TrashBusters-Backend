@@ -6,7 +6,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\ParticipantController;
 use App\Http\Controllers\PasswordController;
-use App\Http\Controllers\ProfilePictureController;
+use App\Http\Controllers\PictureController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -56,7 +56,7 @@ Route::get('/event/latest', [EventController::class, 'getLatestEvent']);
 
 Route::get('/event/closest', [EventController::class, 'getClosestEvent']);;
 
-Route::post('/upload/{userId}', [ProfilePictureController::class, 'upload']);
+Route::post('/upload-profile-picture/{userId}', [PictureController::class, 'uploadProfilePicture']);
 
 Route::get('/dump/name/{dumpId}', [DumpController::class, 'getDumpNameById']);
 

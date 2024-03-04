@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -25,6 +26,19 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $event = Event::create($request->only(['title', 'description', 'location', 'place', 'date', 'time', 'creatorId', 'dumpId']));
+
+        if ($request->hasFile('eventPicture')) {
+            $file = $request->file('eventPicture');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $folder = 'event-pictures';
+
+            $file->storePubliclyAs($folder, $filename, 's3');
+
+            $url = Storage::disk('s3')->url($folder. '/'. $filename);
+
+            $event->update(['eventPictureURL' => $url]);
+            return response()->json(['message' => 'File uploaded successfully', 'url' => $url], 200);
+        }
         return response()->json($event);
     }
 
