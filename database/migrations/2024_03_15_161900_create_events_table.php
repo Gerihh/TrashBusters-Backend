@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('participants')->default(0);
             $table->foreignId('creatorId')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('dumpId')->nullable()->references('id')->on('dumps')->onDelete('cascade');
+            $table->string('eventPictureURL')->nullable()->default('pictures/no-profile-picture.jpg');
         });
     }
 
