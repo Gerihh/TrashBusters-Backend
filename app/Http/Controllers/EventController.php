@@ -27,6 +27,10 @@ class EventController extends Controller
     {
         $event = Event::create($request->only(['title', 'description', 'location', 'place', 'date', 'time', 'creatorId', 'dumpId']));
 
+        $request->validate([
+            'eventPicture' =>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
         if ($request->hasFile('eventPicture')) {
             $file = $request->file('eventPicture');
             $filename = time() . '_' . $file->getClientOriginalName();
@@ -96,7 +100,7 @@ class EventController extends Controller
     }
 
     $events = Event::where('creatorId', $creatorId)
-        ->select('id', 'title', 'description', 'participants', 'location', 'place', 'date', 'time', 'creatorId')
+        ->select('id', 'title', 'description', 'participants', 'location', 'place', 'date', 'time', 'creatorId', 'eventPictureURL')
         ->get();
 
     return response()->json($events);

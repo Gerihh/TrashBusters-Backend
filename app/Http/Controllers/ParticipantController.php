@@ -95,7 +95,7 @@ class ParticipantController extends Controller
 
         $participants = Participant::where('userId', $userId)
             ->with(['event' => function ($query) {
-                $query->select('id', 'title', 'description', 'participants', 'location', 'place', 'date', 'time', 'creatorId');
+                $query->select('id', 'title', 'description', 'participants', 'location', 'place', 'date', 'time', 'creatorId', 'eventPictureURL');;
             }])
             ->get();
 
