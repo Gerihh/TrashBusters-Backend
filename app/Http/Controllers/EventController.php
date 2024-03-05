@@ -28,7 +28,7 @@ class EventController extends Controller
         $event = Event::create($request->only(['title', 'description', 'location', 'place', 'date', 'time', 'creatorId', 'dumpId']));
 
         $request->validate([
-            'eventPicture' =>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'eventPicture' =>'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         if ($request->hasFile('eventPicture')) {
