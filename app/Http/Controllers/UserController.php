@@ -19,22 +19,6 @@ class UserController extends Controller
         return response()->json($users);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(NewUserRequest $request)
-    {
-
-        $data = $request->validated();
-        $data['password'] = bcrypt($request->password);
-        $user = User::create($data);
-
-        return response()->json($user);
-}
-
-    /**
-     * Display the specified resource.
-     */
     public function show(User $user)
     {
         $user = User::find($user->id);

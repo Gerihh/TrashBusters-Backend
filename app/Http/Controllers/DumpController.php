@@ -26,25 +26,6 @@ class DumpController extends Controller
         return response()->json($dump, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Dump $dump)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Dump $dump)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Dump $dump)
     {
         $dump = Dump::find($dump->id);

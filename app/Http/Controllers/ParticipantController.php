@@ -26,24 +26,6 @@ class ParticipantController extends Controller
         return response()->json($participant, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Participant $participant)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Participant $participant)
-    {
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($eventId, $userId)
     {
         $participant = Participant::where([
