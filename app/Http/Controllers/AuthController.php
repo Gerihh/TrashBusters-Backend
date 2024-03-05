@@ -4,14 +4,48 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\NewUserRequest;
-use App\Mail\VerificationEmail;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
+    /**
+ * @OA\Post(
+ *     path="/api/auth/register",
+ *     summary="Regisztráció",
+ *     description="Új felhasználó regisztrálása",
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\MediaType(
+ *             mediaType="application/json",
+ *             @OA\Schema(
+ *                 @OA\Property(property="username", type="string", example="user"),
+ *                 @OA\Property(property="email", type="string", example="user@gmail.com"),
+ *                 @OA\Property(property="password", type="string", example="password"),
+ *                 @OA\Property(property="city", type="string", example="Budapest"),
+ *             ),
+ *         ),
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Sikeres regisztráció",
+ *         @OA\JsonContent(
+ *          @OA\Property(property="user", type="object"),
+ *          @OA\Property(property="accessToken", type="string"),
+ *         ),
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Sikertelen regisztráció",
+ *         @OA\JsonContent(
+ *          @OA\Property(property="error", type="error.message"),
+ *         ),
+ *     ),
+ * )
+ */
+
+
     public function register(NewUserRequest $request)
     {
         //Validálás
@@ -33,6 +67,38 @@ class AuthController extends Controller
             'accessToken' => $token,
         ]);
     }
+    /**
+ * @OA\Post(
+ *     path="/api/auth/login",
+ *     summary="Bejelentkezés",
+ *     description="Bejelentkezés meglévő felhasználóval",
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\MediaType(
+ *             mediaType="application/json",
+ *             @OA\Schema(
+ *                 @OA\Property(property="email", type="string", example="user@gmail.com"),
+ *                 @OA\Property(property="password", type="string", example="password"),
+ *             ),
+ *         ),
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Sikeres bejelentkezés",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="user", type="object"),
+ *             @OA\Property(property="accessToken", type="string"),
+ *         ),
+ *     ),
+ *      @OA\Response(
+ *         response=400,
+ *         description="Sikertelen bejelentkezés",
+ *         @OA\JsonContent(
+ *          @OA\Property(property="error", type="error.message"),
+ *         ),
+ *     ),
+ * )
+ */
     public function login(LoginUserRequest $request)
     {
         //Validálás
@@ -50,9 +116,7 @@ class AuthController extends Controller
                     'user' => $user,
                     'accessToken' => $token,
                 ]);
-
-            }
-            else {
+            } else {
                 Auth::logout();
                 return response()->json([
                     'error' => 'Még nem erősítette meg a felhasználóját!',
@@ -63,9 +127,28 @@ class AuthController extends Controller
 
         //Autentikációs hiba
         return response()->json(['error' => 'Hibás bejelentkezés'], 401);
-
     }
-
+    /**
+ * @OA\Post(
+ *     path="/api/auth/logout",
+ *     summary="Kijelentkezés",
+ *     description="Felhasználó kijelentkezése",
+ *     @OA\Response(
+ *         response=200,
+ *         description="Sikeres kijelentkezés",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string"),
+ *         ),
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Sikertelen kijelentkezés",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="error", type="string"),
+ *         ),
+ *     ),
+ * )
+ */
 
     public function logout()
     {
