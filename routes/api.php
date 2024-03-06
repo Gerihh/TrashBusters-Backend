@@ -46,8 +46,6 @@ Route::get('/participants/check/{eventId}/{userId}', [ParticipantController::cla
 
 Route::delete('/participants/delete/{eventId}/{userId}', [ParticipantController::class, 'destroy']);
 
-Route::patch('/events/{event}/participant-left', [EventController::class, 'decrementParticipants']);
-
 Route::get('/users/username/{username}', [UserController::class, 'getUserByUsername']);
 
 Route::get('/event/most-participants', [EventController::class, 'getEventWithMostParticipants']);

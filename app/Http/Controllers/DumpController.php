@@ -9,17 +9,35 @@ use Illuminate\Support\Facades\Validator;
 class DumpController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
+ * @OA\Get(
+ *     path="/api/dumps",
+ *     summary="Lerakók listázása",
+ *     description="Az összes lerakó listázása",
+ *     tags={"Lerakók"},
+ *     @OA\Response(
+ *         response=200,
+ *         description="Sikeres lekérés",
+ *         @OA\JsonContent(
+ *             type="array",
+ *             @OA\Items(
+ *                 type="object",
+ *                 @OA\Property(property="id", type="integer"),
+ *                 @OA\Property(property="name", type="string"),
+ *                 @OA\Property(property="description", type="string"),
+ *                 @OA\Property(property="location", type="string"),
+ *                 @OA\Property(property="contactPhone", type="string"),
+ *                 @OA\Property(property="contactEmail", type="string"),
+ *             ),
+ *         ),
+ *     ),
+ * )
+ */
     public function index()
     {
         $dumps = Dump::all();
         return response()->json($dumps);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $dump = Dump::create($request->all());
@@ -37,7 +55,35 @@ class DumpController extends Controller
             return response()->json(['message' => 'Sikeres törlés'], 200);
         }
     }
-
+    /**
+ * @OA\Get(
+ *     path="/api/dump/name/{dumpId}",
+ *     summary="Lerakó nevének lekérése id alapján",
+ *     description="Lerakó nevének lekérése id alapján",
+ *     tags={"Lerakók"},
+ *     @OA\Parameter(
+ *         name="dumpId",
+ *         in="path",
+ *         required=true,
+ *         description="Lerakó azoosítója",
+ *         @OA\Schema(type="integer"),
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Sikeres lekérés",
+ *         @OA\JsonContent(
+ *             type="string",
+ *         ),
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Hibás kérés",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="error", type="string"),
+ *         ),
+ *     ),
+ * )
+ */
     public function getDumpNameById(Request $request, $dumpId)
     {
         $validator = Validator::make(['dumpId' => $dumpId], [
@@ -49,6 +95,6 @@ class DumpController extends Controller
         }
 
         $dump = Dump::find($dumpId);
-        return response()->json($dump->name);
+        return response()->json($dump->name, 200);
     }
 }

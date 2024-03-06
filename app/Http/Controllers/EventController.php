@@ -28,7 +28,7 @@ class EventController extends Controller
         $event = Event::create($request->only(['title', 'description', 'location', 'place', 'date', 'time', 'creatorId', 'dumpId']));
 
         $request->validate([
-            'eventPicture' =>'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'eventPicture' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         if ($request->hasFile('eventPicture')) {
@@ -38,7 +38,7 @@ class EventController extends Controller
 
             $file->storePubliclyAs($folder, $filename, 's3');
 
-            $url = Storage::disk('s3')->url($folder. '/'. $filename);
+            $url = Storage::disk('s3')->url($folder . '/' . $filename);
 
             $event->update(['eventPictureURL' => $url]);
             return response()->json(['message' => 'File uploaded successfully', 'url' => $url], 200);
@@ -71,7 +71,6 @@ class EventController extends Controller
             $event->update($request->all());
             return response()->json($event);
         }
-
     }
 
     /**
@@ -90,30 +89,21 @@ class EventController extends Controller
     }
 
     public function getEventByCreatorId(Request $request, $creatorId)
-{
-    $validator = Validator::make(['creatorId' => $creatorId], [
-        'creatorId' => 'integer|exists:users,id',
-    ]);
+    {
+        $validator = Validator::make(['creatorId' => $creatorId], [
+            'creatorId' => 'integer|exists:users,id',
+        ]);
 
-    if ($validator->fails()) {
-        return response()->json(['error' => 'Nincs ilyen felhasználó'], 400);
+        if ($validator->fails()) {
+            return response()->json(['error' => 'Nincs ilyen felhasználó'], 400);
+        }
+
+        $events = Event::where('creatorId', $creatorId)
+            ->select('id', 'title', 'description', 'participants', 'location', 'place', 'date', 'time', 'creatorId', 'eventPictureURL')
+            ->get();
+
+        return response()->json($events);
     }
-
-    $events = Event::where('creatorId', $creatorId)
-        ->select('id', 'title', 'description', 'participants', 'location', 'place', 'date', 'time', 'creatorId', 'eventPictureURL')
-        ->get();
-
-    return response()->json($events);
-}
-
-    public function decrementParticipants(Event $event)
-{
-    // Assuming your events table has a 'participants' column
-    $event->decrement('participants');
-
-    return response()->json(['message' => 'Participant count decremented successfully']);
-}
-
     public function getEventWithMostParticipants()
     {
         $event = Event::orderBy('participants', 'desc')->first();
@@ -134,5 +124,4 @@ class EventController extends Controller
 
         return response()->json($event);
     }
-
 }

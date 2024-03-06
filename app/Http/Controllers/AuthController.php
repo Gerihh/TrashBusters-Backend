@@ -122,6 +122,7 @@ class AuthController extends Controller
  *                 @OA\Property(property="email", type="string"),
  *                 @OA\Property(property="city", type="string"),
  *                 @OA\Property(property="isVerified", type="integer"),
+ *                 @OA\Property(property="profilePictureURL", type="string"),
  *             ),
  *             @OA\Property(property="accessToken", type="string"),
  *         ),
@@ -137,6 +138,7 @@ class AuthController extends Controller
  *                 @OA\Property(property="email", type="string"),
  *                 @OA\Property(property="city", type="string"),
  *                 @OA\Property(property="isVerified", type="integer"),
+ *                 @OA\Property(property="profilePictureURL", type="string"),
  *             ),
  *         ),
  *     ),
@@ -169,6 +171,7 @@ class AuthController extends Controller
                         'email' => $user->email,
                         'city' => $user->city,
                         'isVerified' => $user->isVerified,
+                        'profilePictureURL' => $user->profilePictureURL,
                     ],
                     'accessToken' => $token,
                 ], 200);

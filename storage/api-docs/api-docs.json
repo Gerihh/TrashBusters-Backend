@@ -184,6 +184,9 @@
                                                 },
                                                 "isVerified": {
                                                     "type": "integer"
+                                                },
+                                                "profilePictureURL": {
+                                                    "type": "string"
                                                 }
                                             },
                                             "type": "object"
@@ -222,6 +225,9 @@
                                                 },
                                                 "isVerified": {
                                                     "type": "integer"
+                                                },
+                                                "profilePictureURL": {
+                                                    "type": "string"
                                                 }
                                             },
                                             "type": "object"
@@ -266,6 +272,99 @@
                                 "schema": {
                                     "properties": {
                                         "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/dumps": {
+            "get": {
+                "tags": [
+                    "Lerakók"
+                ],
+                "summary": "Lerakók listázása",
+                "description": "Az összes lerakó listázása",
+                "operationId": "a86809794447c62dba3777f50e717836",
+                "responses": {
+                    "200": {
+                        "description": "Sikeres lekérés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "type": "string"
+                                            },
+                                            "location": {
+                                                "type": "string"
+                                            },
+                                            "contactPhone": {
+                                                "type": "string"
+                                            },
+                                            "contactEmail": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/dump/name/{dumpId}": {
+            "get": {
+                "tags": [
+                    "Lerakók"
+                ],
+                "summary": "Lerakó nevének lekérése id alapján",
+                "description": "Lerakó nevének lekérése id alapján",
+                "operationId": "294772942cbb745f4d4f716c8452913e",
+                "parameters": [
+                    {
+                        "name": "dumpId",
+                        "in": "path",
+                        "description": "Azonosítója a lerakónak",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sikeres lekérés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Hibás kérés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
                                             "type": "string"
                                         }
                                     },
