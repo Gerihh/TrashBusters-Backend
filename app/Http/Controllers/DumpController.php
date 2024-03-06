@@ -58,8 +58,8 @@ class DumpController extends Controller
     /**
  * @OA\Get(
  *     path="/api/dump/name/{dumpId}",
- *     summary="Lerakó nevének lekérése id alapján",
- *     description="Lerakó nevének lekérése id alapján",
+ *     summary="Lerakó nevének lekérdezése",
+ *     description="Lerakó nevének lekérdezése id alapján",
  *     tags={"Lerakók"},
  *     @OA\Parameter(
  *         name="dumpId",
