@@ -7,7 +7,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 
 /**
- * @OA\Info(title="My First API", version="0.1")
+ * @OA\Info(title="TrashBusters API", version="0.1")
  */
 class Controller extends BaseController
 {
@@ -15,7 +15,7 @@ class Controller extends BaseController
      * @OA\OpenApi(
      *      @OA\Info(
      *          version="1.0",
-     *          title="API Documentation",
+     *          title="API Dokumentáció",
      *          description="API",
      *      )
      * )

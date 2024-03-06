@@ -1,12 +1,15 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "My First API",
+        "title": "TrashBusters API",
         "version": "0.1"
     },
     "paths": {
         "/api/auth/register": {
             "post": {
+                "tags": [
+                    "Hitelesítés"
+                ],
                 "summary": "Regisztráció",
                 "description": "Új felhasználó regisztrálása",
                 "operationId": "d764dd091cc4494ae0baf360b03319f3",
@@ -46,6 +49,23 @@
                                 "schema": {
                                     "properties": {
                                         "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "username": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "city": {
+                                                    "type": "string"
+                                                },
+                                                "isVerified": {
+                                                    "type": "boolean"
+                                                }
+                                            },
                                             "type": "object"
                                         },
                                         "accessToken": {
@@ -64,7 +84,45 @@
                                 "schema": {
                                     "properties": {
                                         "error": {
-                                            "type": "error.message"
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Hibás regisztráció",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "username": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "email": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "password": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
@@ -77,6 +135,9 @@
         },
         "/api/auth/login": {
             "post": {
+                "tags": [
+                    "Hitelesítés"
+                ],
                 "summary": "Bejelentkezés",
                 "description": "Bejelentkezés meglévő felhasználóval",
                 "operationId": "8dcb70df1020986038d098cc08d05dae",
@@ -108,10 +169,62 @@
                                 "schema": {
                                     "properties": {
                                         "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "username": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "city": {
+                                                    "type": "string"
+                                                },
+                                                "isVerified": {
+                                                    "type": "integer"
+                                                }
+                                            },
                                             "type": "object"
                                         },
                                         "accessToken": {
                                             "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Megerősítetlen felhasználó",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "username": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "city": {
+                                                    "type": "string"
+                                                },
+                                                "isVerified": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
@@ -126,7 +239,7 @@
                                 "schema": {
                                     "properties": {
                                         "error": {
-                                            "type": "error.message"
+                                            "type": "string"
                                         }
                                     },
                                     "type": "object"
@@ -139,6 +252,9 @@
         },
         "/api/auth/logout": {
             "post": {
+                "tags": [
+                    "Hitelesítés"
+                ],
                 "summary": "Kijelentkezés",
                 "description": "Felhasználó kijelentkezése",
                 "operationId": "69281b12abb272c76871f19cb17ca563",
@@ -150,21 +266,6 @@
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Sikertelen kijelentkezés",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
                                             "type": "string"
                                         }
                                     },
