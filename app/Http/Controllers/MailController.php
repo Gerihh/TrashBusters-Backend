@@ -27,11 +27,12 @@ class MailController extends Controller
             // Update user status to indicate verification
             $user->update(['isVerified' => true, 'verificationToken' => null]);
 
-            return redirect()->away($URL . ':9000/#/login');
+            return response()->json(['redirect_url' => $URL . ':9000/#/login'], 302);
         } else {
-            return view('email-verification.invalid');
+            return response()->json(['error' => 'Érvénytelen token'], 200);
         }
     }
+
 
     public function sendPasswordResetEmail($user)
     {
@@ -52,21 +53,20 @@ class MailController extends Controller
     }
 
     public function sendProfileDeletionCodeEmail($userId)
-{
-    $user = User::find($userId);
+    {
+        $user = User::find($userId);
 
-    if (!$user) {
-        // Handle the case where the user with the given ID is not found
-        return response()->json(['message' => 'User not found.'], 404);
+        if (!$user) {
+            // Handle the case where the user with the given ID is not found
+            return response()->json(['message' => 'User not found.'], 404);
+        }
+
+        $deletionCode = strtoupper(Str::random(6, 'alnum'));
+
+        Cache::put('deletion_code_' . $user->id, $deletionCode, now()->addMinutes(10));
+
+        Mail::to($user->email)->send(new ProfileDeletionEmail($user, $deletionCode));
+
+        return response()->json(['message' => 'Email elküldve!'], 200);
     }
-
-    $deletionCode = strtoupper(Str::random(6, 'alnum'));
-
-    Cache::put('deletion_code_' . $user->id, $deletionCode, now()->addMinutes(10));
-
-    Mail::to($user->email)->send(new ProfileDeletionEmail($user, $deletionCode));
-
-    return response()->json(['message' => 'Email elküldve!'], 200);
-}
-
 }
