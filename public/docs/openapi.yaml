@@ -1,0 +1,1208 @@
+openapi: 3.0.3
+info:
+  title: Laravel
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost'
+paths:
+  /api/documentation:
+    get:
+      summary: 'Display Swagger API page.'
+      operationId: displaySwaggerAPIPage
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>L5 Swagger UI</title>\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"http://localhost/docs/asset/swagger-ui.css?v=a5df5a49e8b66f43e7b92b0227dd272a\">\n    <link rel=\"icon\" type=\"image/png\" href=\"http://localhost/docs/asset/favicon-32x32.png?v=40d4f2c38d1cd854ad463f16373cbcb6\" sizes=\"32x32\"/>\n    <link rel=\"icon\" type=\"image/png\" href=\"http://localhost/docs/asset/favicon-16x16.png?v=f0ae831196d55d8f4115b6c5e8ec5384\" sizes=\"16x16\"/>\n    <style>\n    html\n    {\n        box-sizing: border-box;\n        overflow: -moz-scrollbars-vertical;\n        overflow-y: scroll;\n    }\n    *,\n    *:before,\n    *:after\n    {\n        box-sizing: inherit;\n    }\n\n    body {\n      margin:0;\n      background: #fafafa;\n    }\n    </style>\n</head>\n\n<body>\n<div id=\"swagger-ui\"></div>\n\n<script src=\"http://localhost/docs/asset/swagger-ui-bundle.js?v=11dc0988c37348bc61d777eb07988190\"></script>\n<script src=\"http://localhost/docs/asset/swagger-ui-standalone-preset.js?v=789de7a58ec7baabacf5b2f9b17843b3\"></script>\n<script>\n    window.onload = function() {\n        // Build a system\n        const ui = SwaggerUIBundle({\n            dom_id: '#swagger-ui',\n            url: \"http://localhost/docs/api-docs.json\",\n            operationsSorter: null,\n            configUrl: null,\n            validatorUrl: null,\n            oauth2RedirectUrl: \"http://localhost/api/oauth2-callback\",\n\n            requestInterceptor: function(request) {\n                request.headers['X-CSRF-TOKEN'] = '';\n                return request;\n            },\n\n            presets: [\n                SwaggerUIBundle.presets.apis,\n                SwaggerUIStandalonePreset\n            ],\n\n            plugins: [\n                SwaggerUIBundle.plugins.DownloadUrl\n            ],\n\n            layout: \"StandaloneLayout\",\n            docExpansion : \"none\",\n            deepLinking: true,\n            filter: true,\n            persistAuthorization: \"false\",\n\n        })\n\n        window.ui = ui\n\n            }\n</script>\n</body>\n</html>\n"
+      tags:
+        - Endpoints
+      security: []
+  /api/oauth2-callback:
+    get:
+      summary: 'Display Oauth2 callback pages.'
+      operationId: displayOauth2CallbackPages
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "<!doctype html>\n<html lang=\"en-US\">\n<head>\n    <title>Swagger UI: OAuth2 Redirect</title>\n</head>\n<body>\n<script>\n    'use strict';\n    function run () {\n        var oauth2 = window.opener.swaggerUIRedirectOauth2;\n        var sentState = oauth2.state;\n        var redirectUrl = oauth2.redirectUrl;\n        var isValid, qp, arr;\n\n        if (/code|token|error/.test(window.location.hash)) {\n            qp = window.location.hash.substring(1).replace('?', '&');\n        } else {\n            qp = location.search.substring(1);\n        }\n\n        arr = qp.split(\"&\");\n        arr.forEach(function (v,i,_arr) { _arr[i] = '\"' + v.replace('=', '\":\"') + '\"';});\n        qp = qp ? JSON.parse('{' + arr.join() + '}',\n                function (key, value) {\n                    return key === \"\" ? value : decodeURIComponent(value);\n                }\n        ) : {};\n\n        isValid = qp.state === sentState;\n\n        if ((\n          oauth2.auth.schema.get(\"flow\") === \"accessCode\" ||\n          oauth2.auth.schema.get(\"flow\") === \"authorizationCode\" ||\n          oauth2.auth.schema.get(\"flow\") === \"authorization_code\"\n        ) && !oauth2.auth.code) {\n            if (!isValid) {\n                oauth2.errCb({\n                    authId: oauth2.auth.name,\n                    source: \"auth\",\n                    level: \"warning\",\n                    message: \"Authorization may be unsafe, passed state was changed in server. The passed state wasn't returned from auth server.\"\n                });\n            }\n\n            if (qp.code) {\n                delete oauth2.state;\n                oauth2.auth.code = qp.code;\n                oauth2.callback({auth: oauth2.auth, redirectUrl: redirectUrl});\n            } else {\n                let oauthErrorMsg;\n                if (qp.error) {\n                    oauthErrorMsg = \"[\"+qp.error+\"]: \" +\n                        (qp.error_description ? qp.error_description+ \". \" : \"no accessCode received from the server. \") +\n                        (qp.error_uri ? \"More info: \"+qp.error_uri : \"\");\n                }\n\n                oauth2.errCb({\n                    authId: oauth2.auth.name,\n                    source: \"auth\",\n                    level: \"error\",\n                    message: oauthErrorMsg || \"[Authorization failed]: no accessCode received from the server.\"\n                });\n            }\n        } else {\n            oauth2.callback({auth: oauth2.auth, token: qp, isValid: isValid, redirectUrl: redirectUrl});\n        }\n        window.close();\n    }\n\n    if (document.readyState !== 'loading') {\n        run();\n    } else {\n        document.addEventListener('DOMContentLoaded', function () {\n            run();\n        });\n    }\n</script>\n</body>\n</html>\n"
+      tags:
+        - Endpoints
+      security: []
+  /api/auth/register:
+    post:
+      summary: ''
+      operationId: postApiAuthRegister
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: 'Must be at least 6 characters.'
+                  example: omkfrjswyzosqckumirzigdljrjlusrjzwxvsnin
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: xkris@example.org
+                city:
+                  type: string
+                  description: ''
+                  example: qui
+                password:
+                  type: string
+                  description: 'Must match the regex /^(?=.*[A-Z])(?=.*[0-9])/. Must be at least 8 characters.'
+                  example: 'Zw24??z[q`_adJx<='
+              required:
+                - username
+                - email
+                - city
+                - password
+      security: []
+  /api/auth/login:
+    post:
+      summary: ''
+      operationId: postApiAuthLogin
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: zena.schneider@example.org
+                password:
+                  type: string
+                  description: ''
+                  example: mollitia
+              required:
+                - email
+                - password
+      security: []
+  /api/auth/logout:
+    post:
+      summary: ''
+      operationId: postApiAuthLogout
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/users:
+    get:
+      summary: 'Display a listing of the resource.'
+      operationId: displayAListingOfTheResource
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                example:
+                  -
+                    id: 1
+                    username: logintest
+                    email: horvathgergo1208@gmail.com
+                    city: Győr
+                    password: $2y$12$mmXDCH3oLSQxN620QXbCY.YoQ.oN/HNl5tP3VDup8TaBowa39KqZu
+                    profilePictureURL: 'https://trashbusters.s3.eu-central-1.amazonaws.com/profile-pictures/1709568678_angry_granny.PNG'
+                    verificationToken: null
+                    isVerified: 1
+                    passwordResetToken: null
+      tags:
+        - Endpoints
+      security: []
+  '/api/users/{id}':
+    get:
+      summary: ''
+      operationId: getApiUsersId
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  username: logintest
+                  email: horvathgergo1208@gmail.com
+                  city: Győr
+                  password: $2y$12$mmXDCH3oLSQxN620QXbCY.YoQ.oN/HNl5tP3VDup8TaBowa39KqZu
+                  profilePictureURL: 'https://trashbusters.s3.eu-central-1.amazonaws.com/profile-pictures/1709568678_angry_granny.PNG'
+                  verificationToken: null
+                  isVerified: 1
+                  passwordResetToken: null
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  username:
+                    type: string
+                    example: logintest
+                  email:
+                    type: string
+                    example: horvathgergo1208@gmail.com
+                  city:
+                    type: string
+                    example: Győr
+                  password:
+                    type: string
+                    example: $2y$12$mmXDCH3oLSQxN620QXbCY.YoQ.oN/HNl5tP3VDup8TaBowa39KqZu
+                  profilePictureURL:
+                    type: string
+                    example: 'https://trashbusters.s3.eu-central-1.amazonaws.com/profile-pictures/1709568678_angry_granny.PNG'
+                  verificationToken:
+                    type: string
+                    example: null
+                  isVerified:
+                    type: integer
+                    example: 1
+                  passwordResetToken:
+                    type: string
+                    example: null
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the user.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/events:
+    get:
+      summary: 'Display a listing of the resource.'
+      operationId: displayAListingOfTheResource
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                example:
+                  -
+                    id: 16
+                    title: adw
+                    description: ad
+                    date: '2024-03-14'
+                    time: '12:00:00'
+                    location: awdawd
+                    place: wa
+                    participants: 1
+                    creatorId: 1
+                    dumpId: null
+                    eventPictureURL: 'https://trashbusters.s3.eu-central-1.amazonaws.com/event-pictures/1709568644_St_George_Cross_250x250.png'
+                  -
+                    id: 17
+                    title: as
+                    description: das
+                    date: '2024-03-07'
+                    time: '12:00:00'
+                    location: d
+                    place: asd
+                    participants: 0
+                    creatorId: 1
+                    dumpId: null
+                    eventPictureURL: 'https://trashbusters.s3.eu-central-1.amazonaws.com/event-pictures/1709568735_angry_granny.PNG'
+                  -
+                    id: 18
+                    title: Szemétszedés
+                    description: 'Közösségi szemétszedést szervezünk Győrben, gyere el te is.'
+                    date: '2024-03-07'
+                    time: '16:00:00'
+                    location: Győr
+                    place: 'Páva utca 20.'
+                    participants: 0
+                    creatorId: 1
+                    dumpId: null
+                    eventPictureURL: 'https://trashbusters.s3.eu-central-1.amazonaws.com/event-pictures/1709573999_garbage.jpg'
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                eventPicture:
+                  type: string
+                  format: binary
+                  description: 'Must be an image. Must not be greater than 2048 kilobytes.'
+      security: []
+  '/api/events/{id}':
+    get:
+      summary: 'Display the specified resource.'
+      operationId: displayTheSpecifiedResource
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 16
+                  title: adw
+                  description: ad
+                  date: '2024-03-14'
+                  time: '12:00:00'
+                  location: awdawd
+                  place: wa
+                  participants: 1
+                  creatorId: 1
+                  dumpId: null
+                  eventPictureURL: 'https://trashbusters.s3.eu-central-1.amazonaws.com/event-pictures/1709568644_St_George_Cross_250x250.png'
+                properties:
+                  id:
+                    type: integer
+                    example: 16
+                  title:
+                    type: string
+                    example: adw
+                  description:
+                    type: string
+                    example: ad
+                  date:
+                    type: string
+                    example: '2024-03-14'
+                  time:
+                    type: string
+                    example: '12:00:00'
+                  location:
+                    type: string
+                    example: awdawd
+                  place:
+                    type: string
+                    example: wa
+                  participants:
+                    type: integer
+                    example: 1
+                  creatorId:
+                    type: integer
+                    example: 1
+                  dumpId:
+                    type: string
+                    example: null
+                  eventPictureURL:
+                    type: string
+                    example: 'https://trashbusters.s3.eu-central-1.amazonaws.com/event-pictures/1709568644_St_George_Cross_250x250.png'
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the event.'
+        example: 16
+        required: true
+        schema:
+          type: integer
+  /api/participants:
+    get:
+      summary: 'Display a listing of the resource.'
+      operationId: displayAListingOfTheResource
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: ''
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/participants/{id}':
+    delete:
+      summary: ''
+      operationId: deleteApiParticipantsId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the participant.'
+        example: numquam
+        required: true
+        schema:
+          type: string
+  /api/dumps:
+    get:
+      summary: 'Display a listing of the resource.'
+      operationId: displayAListingOfTheResource
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                example: []
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/dumps/{id}':
+    delete:
+      summary: ''
+      operationId: deleteApiDumpsId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the dump.'
+        example: 9
+        required: true
+        schema:
+          type: integer
+  '/api/event/participants/{eventId}':
+    get:
+      summary: ''
+      operationId: getApiEventParticipantsEventId
+      description: ''
+      parameters: []
+      responses:
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Nincs ilyen esemény'
+                properties:
+                  message:
+                    type: string
+                    example: 'Nincs ilyen esemény'
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: eventId
+        description: ''
+        example: quae
+        required: true
+        schema:
+          type: string
+  '/api/participants/user/{userId}':
+    get:
+      summary: ''
+      operationId: getApiParticipantsUserUserId
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                example:
+                  -
+                    eventId: 16
+                    userId: 1
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: userId
+        description: ''
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/events/creator/{creatorId}':
+    get:
+      summary: ''
+      operationId: getApiEventsCreatorCreatorId
+      description: ''
+      parameters: []
+      responses:
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: 'Nincs ilyen felhasználó'
+                properties:
+                  error:
+                    type: string
+                    example: 'Nincs ilyen felhasználó'
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                creatorId:
+                  type: integer
+                  description: ''
+                  example: 15
+      security: []
+    parameters:
+      -
+        in: path
+        name: creatorId
+        description: ''
+        example: sit
+        required: true
+        schema:
+          type: string
+  '/api/participants/events/joined/{userId}':
+    get:
+      summary: ''
+      operationId: getApiParticipantsEventsJoinedUserId
+      description: ''
+      parameters: []
+      responses:
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: 'Nincs ilyen felhasználó'
+                properties:
+                  error:
+                    type: string
+                    example: 'Nincs ilyen felhasználó'
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  description: ''
+                  example: 4
+      security: []
+    parameters:
+      -
+        in: path
+        name: userId
+        description: ''
+        example: tenetur
+        required: true
+        schema:
+          type: string
+  '/api/participants/check/{eventId}/{userId}':
+    get:
+      summary: ''
+      operationId: getApiParticipantsCheckEventIdUserId
+      description: ''
+      parameters: []
+      responses:
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: 'Invalid userId'
+                properties:
+                  error:
+                    type: string
+                    example: 'Invalid userId'
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  description: ''
+                  example: 7
+      security: []
+    parameters:
+      -
+        in: path
+        name: eventId
+        description: ''
+        example: laborum
+        required: true
+        schema:
+          type: string
+      -
+        in: path
+        name: userId
+        description: ''
+        example: deleniti
+        required: true
+        schema:
+          type: string
+  '/api/participants/delete/{eventId}/{userId}':
+    delete:
+      summary: ''
+      operationId: deleteApiParticipantsDeleteEventIdUserId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: eventId
+        description: ''
+        example: quia
+        required: true
+        schema:
+          type: string
+      -
+        in: path
+        name: userId
+        description: ''
+        example: dicta
+        required: true
+        schema:
+          type: string
+  '/api/events/{event_id}/participant-left':
+    patch:
+      summary: ''
+      operationId: patchApiEventsEvent_idParticipantLeft
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: event_id
+        description: 'The ID of the event.'
+        example: 16
+        required: true
+        schema:
+          type: integer
+  '/api/users/username/{username}':
+    get:
+      summary: ''
+      operationId: getApiUsersUsernameUsername
+      description: ''
+      parameters: []
+      responses:
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Nincs ilyen nevű felhasználó'
+                properties:
+                  message:
+                    type: string
+                    example: 'Nincs ilyen nevű felhasználó'
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: username
+        description: 'The username.'
+        example: exercitationem
+        required: true
+        schema:
+          type: string
+  /api/event/most-participants:
+    get:
+      summary: ''
+      operationId: getApiEventMostParticipants
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 16
+                  title: adw
+                  description: ad
+                  date: '2024-03-14'
+                  time: '12:00:00'
+                  location: awdawd
+                  place: wa
+                  participants: 1
+                  creatorId: 1
+                  dumpId: null
+                  eventPictureURL: 'https://trashbusters.s3.eu-central-1.amazonaws.com/event-pictures/1709568644_St_George_Cross_250x250.png'
+                properties:
+                  id:
+                    type: integer
+                    example: 16
+                  title:
+                    type: string
+                    example: adw
+                  description:
+                    type: string
+                    example: ad
+                  date:
+                    type: string
+                    example: '2024-03-14'
+                  time:
+                    type: string
+                    example: '12:00:00'
+                  location:
+                    type: string
+                    example: awdawd
+                  place:
+                    type: string
+                    example: wa
+                  participants:
+                    type: integer
+                    example: 1
+                  creatorId:
+                    type: integer
+                    example: 1
+                  dumpId:
+                    type: string
+                    example: null
+                  eventPictureURL:
+                    type: string
+                    example: 'https://trashbusters.s3.eu-central-1.amazonaws.com/event-pictures/1709568644_St_George_Cross_250x250.png'
+      tags:
+        - Endpoints
+      security: []
+  /api/event/latest:
+    get:
+      summary: ''
+      operationId: getApiEventLatest
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 18
+                  title: Szemétszedés
+                  description: 'Közösségi szemétszedést szervezünk Győrben, gyere el te is.'
+                  date: '2024-03-07'
+                  time: '16:00:00'
+                  location: Győr
+                  place: 'Páva utca 20.'
+                  participants: 0
+                  creatorId: 1
+                  dumpId: null
+                  eventPictureURL: 'https://trashbusters.s3.eu-central-1.amazonaws.com/event-pictures/1709573999_garbage.jpg'
+                properties:
+                  id:
+                    type: integer
+                    example: 18
+                  title:
+                    type: string
+                    example: Szemétszedés
+                  description:
+                    type: string
+                    example: 'Közösségi szemétszedést szervezünk Győrben, gyere el te is.'
+                  date:
+                    type: string
+                    example: '2024-03-07'
+                  time:
+                    type: string
+                    example: '16:00:00'
+                  location:
+                    type: string
+                    example: Győr
+                  place:
+                    type: string
+                    example: 'Páva utca 20.'
+                  participants:
+                    type: integer
+                    example: 0
+                  creatorId:
+                    type: integer
+                    example: 1
+                  dumpId:
+                    type: string
+                    example: null
+                  eventPictureURL:
+                    type: string
+                    example: 'https://trashbusters.s3.eu-central-1.amazonaws.com/event-pictures/1709573999_garbage.jpg'
+      tags:
+        - Endpoints
+      security: []
+  /api/event/closest:
+    get:
+      summary: ''
+      operationId: getApiEventClosest
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 17
+                  title: as
+                  description: das
+                  date: '2024-03-07'
+                  time: '12:00:00'
+                  location: d
+                  place: asd
+                  participants: 0
+                  creatorId: 1
+                  dumpId: null
+                  eventPictureURL: 'https://trashbusters.s3.eu-central-1.amazonaws.com/event-pictures/1709568735_angry_granny.PNG'
+                properties:
+                  id:
+                    type: integer
+                    example: 17
+                  title:
+                    type: string
+                    example: as
+                  description:
+                    type: string
+                    example: das
+                  date:
+                    type: string
+                    example: '2024-03-07'
+                  time:
+                    type: string
+                    example: '12:00:00'
+                  location:
+                    type: string
+                    example: d
+                  place:
+                    type: string
+                    example: asd
+                  participants:
+                    type: integer
+                    example: 0
+                  creatorId:
+                    type: integer
+                    example: 1
+                  dumpId:
+                    type: string
+                    example: null
+                  eventPictureURL:
+                    type: string
+                    example: 'https://trashbusters.s3.eu-central-1.amazonaws.com/event-pictures/1709568735_angry_granny.PNG'
+      tags:
+        - Endpoints
+      security: []
+  '/api/upload-profile-picture/{userId_id}':
+    post:
+      summary: ''
+      operationId: postApiUploadProfilePictureUserId_id
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                profilePicture:
+                  type: string
+                  format: binary
+                  description: 'Must be a file. Must not be greater than 2048 kilobytes.'
+              required:
+                - profilePicture
+      security: []
+    parameters:
+      -
+        in: path
+        name: userId_id
+        description: 'The ID of the userId.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/dump/name/{dumpId}':
+    get:
+      summary: ''
+      operationId: getApiDumpNameDumpId
+      description: ''
+      parameters: []
+      responses:
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: 'Nincs lerakó ilyen azonosítóval'
+                properties:
+                  error:
+                    type: string
+                    example: 'Nincs lerakó ilyen azonosítóval'
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dumpId:
+                  type: integer
+                  description: ''
+                  example: 12
+      security: []
+    parameters:
+      -
+        in: path
+        name: dumpId
+        description: ''
+        example: quo
+        required: true
+        schema:
+          type: string
+  '/api/change-password/{userId_id}':
+    post:
+      summary: ''
+      operationId: postApiChangePasswordUserId_id
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: userId_id
+        description: 'The ID of the userId.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/reset-password:
+    post:
+      summary: ''
+      operationId: postApiResetPassword
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/user/password-reset-token/{token}':
+    get:
+      summary: ''
+      operationId: getApiUserPasswordResetTokenToken
+      description: ''
+      parameters: []
+      responses:
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: 'Nincs ilyen token'
+                properties:
+                  error:
+                    type: string
+                    example: 'Nincs ilyen token'
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: token
+        description: ''
+        example: doloremque
+        required: true
+        schema:
+          type: string
+  '/api/participants/event/{eventId}':
+    get:
+      summary: ''
+      operationId: getApiParticipantsEventEventId
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  users:
+                    -
+                      id: 1
+                      username: logintest
+                      email: horvathgergo1208@gmail.com
+                      city: Győr
+                      password: $2y$12$mmXDCH3oLSQxN620QXbCY.YoQ.oN/HNl5tP3VDup8TaBowa39KqZu
+                      profilePictureURL: 'https://trashbusters.s3.eu-central-1.amazonaws.com/profile-pictures/1709568678_angry_granny.PNG'
+                      verificationToken: null
+                      isVerified: 1
+                      passwordResetToken: null
+                  count: 1
+                properties:
+                  users:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        username: logintest
+                        email: horvathgergo1208@gmail.com
+                        city: Győr
+                        password: $2y$12$mmXDCH3oLSQxN620QXbCY.YoQ.oN/HNl5tP3VDup8TaBowa39KqZu
+                        profilePictureURL: 'https://trashbusters.s3.eu-central-1.amazonaws.com/profile-pictures/1709568678_angry_granny.PNG'
+                        verificationToken: null
+                        isVerified: 1
+                        passwordResetToken: null
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        username:
+                          type: string
+                          example: logintest
+                        email:
+                          type: string
+                          example: horvathgergo1208@gmail.com
+                        city:
+                          type: string
+                          example: Győr
+                        password:
+                          type: string
+                          example: $2y$12$mmXDCH3oLSQxN620QXbCY.YoQ.oN/HNl5tP3VDup8TaBowa39KqZu
+                        profilePictureURL:
+                          type: string
+                          example: 'https://trashbusters.s3.eu-central-1.amazonaws.com/profile-pictures/1709568678_angry_granny.PNG'
+                        verificationToken:
+                          type: string
+                          example: null
+                        isVerified:
+                          type: integer
+                          example: 1
+                        passwordResetToken:
+                          type: string
+                          example: null
+                  count:
+                    type: integer
+                    example: 1
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: eventId
+        description: ''
+        example: 16
+        required: true
+        schema:
+          type: integer
+  '/api/profile-deletion-email/{userId}':
+    get:
+      summary: ''
+      operationId: getApiProfileDeletionEmailUserId
+      description: ''
+      parameters: []
+      responses:
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'User not found.'
+                properties:
+                  message:
+                    type: string
+                    example: 'User not found.'
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: userId
+        description: ''
+        example: et
+        required: true
+        schema:
+          type: string
+  /api/verify-deletion-code:
+    post:
+      summary: ''
+      operationId: postApiVerifyDeletionCode
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+tags:
+  -
+    name: Endpoints
+    description: ''

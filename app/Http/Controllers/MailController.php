@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Mail\PasswordResetEmail;
+use App\Mail\ProfileDeletionEmail;
 use App\Mail\VerificationEmail;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class MailController extends Controller
 {
@@ -18,16 +21,19 @@ class MailController extends Controller
     public function verifyEmail($token)
     {
         $user = User::where('verificationToken', $token)->first();
+        $URL = env('APP_URL');
 
         if ($user) {
-            // Update user status to indicate verification
             $user->update(['isVerified' => true, 'verificationToken' => null]);
 
-            return redirect()->away('http://localhost:9000/#/login');
+            $redirectUrl = $URL . ':9000/#/login';
+
+            return redirect()->away($redirectUrl);
         } else {
-            return view('email-verification.invalid');
+            return response()->json(['error' => 'Érvénytelen token'], 200);
         }
     }
+
 
     public function sendPasswordResetEmail($user)
     {
@@ -39,11 +45,30 @@ class MailController extends Controller
     public function resetPassword($token)
     {
         $user = User::where('passwordResetToken', $token)->first();
-
+        $URL = env('APP_URL');
         if ($user) {
-            return redirect()->away('http://localhost:9000/#/password-recovery/' . $user->passwordResetToken);
+            $redirectUrl = $URL . ':9000/#/password-recovery/'. $user->passwordResetToken;
+            return redirect()->away($redirectUrl);
         } else {
             return view('email-verification.invalid');
         }
+    }
+
+    public function sendProfileDeletionCodeEmail($userId)
+    {
+        $user = User::find($userId);
+
+        if (!$user) {
+            // Handle the case where the user with the given ID is not found
+            return response()->json(['message' => 'User not found.'], 404);
+        }
+
+        $deletionCode = strtoupper(Str::random(6, 'alnum'));
+
+        Cache::put('deletion_code_' . $user->id, $deletionCode, now()->addMinutes(10));
+
+        Mail::to($user->email)->send(new ProfileDeletionEmail($user, $deletionCode));
+
+        return response()->json(['message' => 'Email elküldve!'], 200);
     }
 }

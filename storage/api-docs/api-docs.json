@@ -1,0 +1,1809 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "TrashBusters API",
+        "version": "0.1"
+    },
+    "paths": {
+        "/api/auth/register": {
+            "post": {
+                "tags": [
+                    "Hitelesítés"
+                ],
+                "summary": "Regisztráció",
+                "description": "Új felhasználó regisztrálása",
+                "operationId": "d764dd091cc4494ae0baf360b03319f3",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "user"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "user@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password"
+                                    },
+                                    "city": {
+                                        "type": "string",
+                                        "example": "Budapest"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Sikeres regisztráció",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "username": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "city": {
+                                                    "type": "string"
+                                                },
+                                                "isVerified": {
+                                                    "type": "boolean"
+                                                },
+                                                "profilePictureURL": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "accessToken": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Sikertelen regisztráció",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Hibás regisztráció",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "username": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "email": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "password": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Hitelesítés"
+                ],
+                "summary": "Bejelentkezés",
+                "description": "Bejelentkezés meglévő felhasználóval",
+                "operationId": "8dcb70df1020986038d098cc08d05dae",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "user@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Sikeres bejelentkezés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "username": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "city": {
+                                                    "type": "string"
+                                                },
+                                                "isVerified": {
+                                                    "type": "integer"
+                                                },
+                                                "profilePictureURL": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "accessToken": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Megerősítetlen felhasználó",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "username": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "city": {
+                                                    "type": "string"
+                                                },
+                                                "isVerified": {
+                                                    "type": "integer"
+                                                },
+                                                "profilePictureURL": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Sikertelen bejelentkezés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "tags": [
+                    "Hitelesítés"
+                ],
+                "summary": "Kijelentkezés",
+                "description": "Felhasználó kijelentkezése",
+                "operationId": "69281b12abb272c76871f19cb17ca563",
+                "responses": {
+                    "200": {
+                        "description": "Sikeres kijelentkezés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/dumps": {
+            "get": {
+                "tags": [
+                    "Lerakók"
+                ],
+                "summary": "Lerakók listázása",
+                "description": "Az összes lerakó listázása",
+                "operationId": "a86809794447c62dba3777f50e717836",
+                "responses": {
+                    "200": {
+                        "description": "Sikeres lekérés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "type": "string"
+                                            },
+                                            "location": {
+                                                "type": "string"
+                                            },
+                                            "contactPhone": {
+                                                "type": "string"
+                                            },
+                                            "contactEmail": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/dump/name/{dumpId}": {
+            "get": {
+                "tags": [
+                    "Lerakók"
+                ],
+                "summary": "Lerakó nevének lekérdezése",
+                "description": "Lerakó nevének lekérdezése id alapján",
+                "operationId": "294772942cbb745f4d4f716c8452913e",
+                "parameters": [
+                    {
+                        "name": "dumpId",
+                        "in": "path",
+                        "description": "Lerakó azoosítója",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sikeres lekérés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Hibás kérés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/events": {
+            "get": {
+                "tags": [
+                    "Események"
+                ],
+                "summary": "Események listázása",
+                "description": "Az összes esemény listázása",
+                "operationId": "7058ab7c89d20c752b6afd6d808f6526",
+                "responses": {
+                    "200": {
+                        "description": "Sikeres lekérés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "title": {
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "type": "string"
+                                            },
+                                            "date": {
+                                                "type": "string"
+                                            },
+                                            "time": {
+                                                "type": "string"
+                                            },
+                                            "location": {
+                                                "type": "string"
+                                            },
+                                            "place": {
+                                                "type": "string"
+                                            },
+                                            "participants": {
+                                                "type": "integer"
+                                            },
+                                            "creatorId": {
+                                                "type": "integer"
+                                            },
+                                            "dumpId": {
+                                                "type": "integer"
+                                            },
+                                            "eventPictureURL": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Események"
+                ],
+                "summary": "Esemény létrehozása",
+                "description": "Új esemény létrehozása",
+                "operationId": "508895e03d7f10edac84357084c87b20",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Szemétszedés"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": ""
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "example": "Budapest"
+                                    },
+                                    "place": {
+                                        "type": "string",
+                                        "example": "Hősök tere"
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "example": "2024-07-12"
+                                    },
+                                    "time": {
+                                        "type": "string",
+                                        "example": "16:00"
+                                    },
+                                    "creatorId": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "dumpId": {
+                                        "type": "integer",
+                                        "example": ""
+                                    },
+                                    "eventPicture": {
+                                        "type": "file",
+                                        "example": ""
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Sikeres esemény létrehozása",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "event": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "location": {
+                                                    "type": "string"
+                                                },
+                                                "place": {
+                                                    "type": "string"
+                                                },
+                                                "date": {
+                                                    "type": "string"
+                                                },
+                                                "time": {
+                                                    "type": "string"
+                                                },
+                                                "participants": {
+                                                    "type": "integer"
+                                                },
+                                                "creatorId": {
+                                                    "type": "integer"
+                                                },
+                                                "dumpId": {
+                                                    "type": "integer"
+                                                },
+                                                "eventPictureURL": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Sikertelen esemény létrehozása",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Nem feldolgozható tartalom",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "eventPicture": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/events/{id}": {
+            "get": {
+                "tags": [
+                    "Események"
+                ],
+                "summary": "Esemény lekérdezése",
+                "description": "Esemény lekérdezése id alapján",
+                "operationId": "6f743f71f7a88dbe57be1d9c9ebf47cb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Az esemény azonosítója",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sikeres lekérdezés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "date": {
+                                            "type": "string"
+                                        },
+                                        "time": {
+                                            "type": "string"
+                                        },
+                                        "location": {
+                                            "type": "string"
+                                        },
+                                        "place": {
+                                            "type": "string"
+                                        },
+                                        "participants": {
+                                            "type": "integer"
+                                        },
+                                        "creatorId": {
+                                            "type": "integer"
+                                        },
+                                        "dumpId": {
+                                            "type": "integer"
+                                        },
+                                        "eventPictureURL": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Nincs esemény ilyen azonosítóval",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Események"
+                ],
+                "summary": "Esemény módosítása",
+                "description": "Esemény módosítása azonosító alapján",
+                "operationId": "fb130dcf1ab4d7abbd3a173741df1f8f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Az esemény azonosítója",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Módosított cím"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Módosított leírás"
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "example": "Módosított helyszín"
+                                    },
+                                    "place": {
+                                        "type": "string",
+                                        "example": "Módosított hely"
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "example": "2022-12-12"
+                                    },
+                                    "time": {
+                                        "type": "string",
+                                        "example": "18:00"
+                                    },
+                                    "creatorId": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    },
+                                    "dumpId": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Sikeres esemény módosítás",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "date": {
+                                            "type": "string"
+                                        },
+                                        "time": {
+                                            "type": "string"
+                                        },
+                                        "location": {
+                                            "type": "string"
+                                        },
+                                        "place": {
+                                            "type": "string"
+                                        },
+                                        "participants": {
+                                            "type": "integer"
+                                        },
+                                        "creatorId": {
+                                            "type": "integer"
+                                        },
+                                        "dumpId": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Az esemény nem található",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Események"
+                ],
+                "summary": "Esemény törlése",
+                "description": "Esemény törlése azonosító alapján",
+                "operationId": "b8c8f4b41a32532f5e9f7146e511bc61",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Az esemény azonosítója",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sikeres esemény törlés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Az esemény nem található",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/events/creator/{creatorId}": {
+            "get": {
+                "tags": [
+                    "Események"
+                ],
+                "summary": "Események lekérése szervező azonosítója alapján",
+                "description": "Események lekérése szervező azonosítója alapján",
+                "operationId": "b5564b7eefa88111847b3f8442e872df",
+                "parameters": [
+                    {
+                        "name": "creatorId",
+                        "in": "path",
+                        "description": "A szervező azonosítója",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sikeres lekérés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "title": {
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "type": "string"
+                                            },
+                                            "participants": {
+                                                "type": "integer"
+                                            },
+                                            "location": {
+                                                "type": "string"
+                                            },
+                                            "place": {
+                                                "type": "string"
+                                            },
+                                            "date": {
+                                                "type": "string"
+                                            },
+                                            "time": {
+                                                "type": "string"
+                                            },
+                                            "creatorId": {
+                                                "type": "integer"
+                                            },
+                                            "eventPictureURL": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Érvénytelen kérés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/event/most-participants": {
+            "get": {
+                "tags": [
+                    "Események"
+                ],
+                "summary": "Esemény lekérése a legtöbb résztvevővel",
+                "description": "Esemény lekérése a legtöbb résztvevővel",
+                "operationId": "a69137a2c2bdecc7cf23addac22bfe26",
+                "responses": {
+                    "200": {
+                        "description": "Sikeres lekérés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "participants": {
+                                            "type": "integer"
+                                        },
+                                        "location": {
+                                            "type": "string"
+                                        },
+                                        "place": {
+                                            "type": "string"
+                                        },
+                                        "date": {
+                                            "type": "string"
+                                        },
+                                        "time": {
+                                            "type": "string"
+                                        },
+                                        "creatorId": {
+                                            "type": "integer"
+                                        },
+                                        "eventPictureURL": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/event/latest": {
+            "get": {
+                "tags": [
+                    "Események"
+                ],
+                "summary": "Legfrissebb esemény lékérése",
+                "description": "Legfrissebb esemény lékérése",
+                "operationId": "50ca3d8d0b1ef95c9913091994672dd1",
+                "responses": {
+                    "200": {
+                        "description": "Sikeres lekérés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "participants": {
+                                            "type": "integer"
+                                        },
+                                        "location": {
+                                            "type": "string"
+                                        },
+                                        "place": {
+                                            "type": "string"
+                                        },
+                                        "date": {
+                                            "type": "string"
+                                        },
+                                        "time": {
+                                            "type": "string"
+                                        },
+                                        "creatorId": {
+                                            "type": "integer"
+                                        },
+                                        "eventPictureURL": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/event/closest": {
+            "get": {
+                "tags": [
+                    "Események"
+                ],
+                "summary": "Időben legközelebbi esemény lekérése",
+                "description": "Időben legközelebbi esemény lévő esemény lekérése",
+                "operationId": "efcc3fc04f9db614743ba8ddc3e7d3d0",
+                "responses": {
+                    "200": {
+                        "description": "Sikeres lekérés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "participants": {
+                                            "type": "integer"
+                                        },
+                                        "location": {
+                                            "type": "string"
+                                        },
+                                        "place": {
+                                            "type": "string"
+                                        },
+                                        "date": {
+                                            "type": "string"
+                                        },
+                                        "time": {
+                                            "type": "string"
+                                        },
+                                        "creatorId": {
+                                            "type": "integer"
+                                        },
+                                        "eventPictureURL": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/event/participants/{eventId}": {
+            "get": {
+                "tags": [
+                    "Résztvevők"
+                ],
+                "summary": "Résztvevők azonosítójának listázása egy eseményhez",
+                "description": "Résztvevők azonosítójának listázása egy eseményhez azonosító alapján",
+                "operationId": "79169f3be3b29f25538bf3b67b8adc7b",
+                "parameters": [
+                    {
+                        "name": "eventId",
+                        "in": "path",
+                        "description": "Az esemény azonosítója",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sikeres lekérés esetén a résztvevők listája",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "eventId": {
+                                                "type": "integer"
+                                            },
+                                            "userId": {
+                                                "type": "integer"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Érvénytelen esemény azonosító esetén a hibaüzenet",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/participants/user/{userId}": {
+            "get": {
+                "tags": [
+                    "Résztvevők"
+                ],
+                "summary": "Események azonosítójának lekérése egy felhasználóhoz",
+                "description": "Események azonosítójának lekérése egy felhasználóhoz azonosító alapján",
+                "operationId": "4da239cd46150196abd765f0dfc8c1b6",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "A felhasználó azonosítója",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sikeres lekérés esetén a résztvevők listája",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "eventId": {
+                                                "type": "integer"
+                                            },
+                                            "userId": {
+                                                "type": "integer"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Érvénytelen felhasználó azonosító esetén a hibaüzenet",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/participants/events/joined/{userId}": {
+            "get": {
+                "tags": [
+                    "Résztvevők"
+                ],
+                "summary": "Események lekérése egy felhasználóhoz",
+                "description": "Események lekérése egy felhasználóhoz azonosító alapján",
+                "operationId": "9d63e7856a7a46d4c47856fd7cbcfc1b",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "A felhasználó azonosítója",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sikeres lekérés esetén a felhasználó által csatlakozott események listája",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "title": {
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "type": "string"
+                                            },
+                                            "participants": {
+                                                "type": "integer"
+                                            },
+                                            "location": {
+                                                "type": "string"
+                                            },
+                                            "place": {
+                                                "type": "string"
+                                            },
+                                            "date": {
+                                                "type": "string",
+                                                "format": "date"
+                                            },
+                                            "time": {
+                                                "type": "string",
+                                                "format": "time"
+                                            },
+                                            "creatorId": {
+                                                "type": "integer"
+                                            },
+                                            "dumpId": {
+                                                "type": "integer"
+                                            },
+                                            "eventPictureURL": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Érvénytelen felhasználó azonosító esetén a hibaüzenet",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/participants/check/{eventId}/{userId}": {
+            "get": {
+                "tags": [
+                    "Résztvevők"
+                ],
+                "summary": "Ellenőrzi, hogy a résztvevő pár létezik-e",
+                "description": "Ellenőrzi, hogy a résztvevő pár létezik-e",
+                "operationId": "3d2a16f1200f01533a51596f49adfef3",
+                "parameters": [
+                    {
+                        "name": "eventId",
+                        "in": "path",
+                        "description": "Az esemény azonosítója",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "A felhasználó azonosítója",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sikeres lekérés esetén a pár létezésének állapota",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "exists": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Érvénytelen esemény vagy felhasználó azonosító esetén a hibaüzenet",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/participants/event/{eventId}": {
+            "get": {
+                "tags": [
+                    "Résztvevők"
+                ],
+                "summary": "Résztvevők lekérése egy eseményhez",
+                "description": "Résztvevők lekérése egy eseményhez azonosító alapján",
+                "operationId": "f784daf867ef4beb8d7651a00e857c85",
+                "parameters": [
+                    {
+                        "name": "eventId",
+                        "in": "path",
+                        "description": "Az esemény azonosítója",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sikeres lekérés esetén a résztvevők és a résztvevők számának adatai",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "users": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "username": {
+                                                        "type": "string"
+                                                    },
+                                                    "email": {
+                                                        "type": "string"
+                                                    },
+                                                    "city": {
+                                                        "type": "string"
+                                                    },
+                                                    "isVerified": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "profilePictureURL": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "count": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Hibás kérés esetén az error üzenet",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "Felhasználók"
+                ],
+                "summary": "Felhasználók lekérése",
+                "description": "Az összes felhasználó lekérése",
+                "operationId": "c457726701591d1183b53aa71fc13441",
+                "responses": {
+                    "200": {
+                        "description": "Sikeres lekérés esetén a felhasználók adatai",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "username": {
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "city": {
+                                                "type": "string"
+                                            },
+                                            "password": {
+                                                "type": "string"
+                                            },
+                                            "profilePictureURL": {
+                                                "type": "string"
+                                            },
+                                            "verificationToken": {
+                                                "type": "string"
+                                            },
+                                            "isVerified": {
+                                                "type": "boolean"
+                                            },
+                                            "passwordResetToken": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/{id}": {
+            "get": {
+                "tags": [
+                    "Felhasználók"
+                ],
+                "summary": "Felhasználó lekérése",
+                "description": "Felhasználó adatainak lekérése azonosító alapján",
+                "operationId": "36a33ff774d5cba33c039dec2c3e0287",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "A felhasználó azonosítója",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sikeres lekérés esetén a felhasználó adatai",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "username": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "city": {
+                                            "type": "string"
+                                        },
+                                        "password": {
+                                            "type": "string"
+                                        },
+                                        "profilePictureURL": {
+                                            "type": "string"
+                                        },
+                                        "verificationToken": {
+                                            "type": "string"
+                                        },
+                                        "isVerified": {
+                                            "type": "boolean"
+                                        },
+                                        "passwordResetToken": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Nem található felhasználó az adott azonosítóval",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Felhasználók"
+                ],
+                "summary": "Felhasználó frissítése",
+                "description": "Felhasználó adatainak frissítése azonosító alapján",
+                "operationId": "b9091397c8b25f12c6adb74be6ce3a5a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "A felhasználó azonosítója",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "A frissítendő felhasználó adatai",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    },
+                                    "profilePictureURL": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Sikeres frissítés esetén a frissített felhasználó adatai",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "username": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "city": {
+                                            "type": "string"
+                                        },
+                                        "password": {
+                                            "type": "string"
+                                        },
+                                        "profilePictureURL": {
+                                            "type": "string"
+                                        },
+                                        "verificationToken": {
+                                            "type": "string"
+                                        },
+                                        "isVerified": {
+                                            "type": "boolean"
+                                        },
+                                        "passwordResetToken": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Hibás kérés esetén a validációs hibaüzenetek",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Nem található felhasználó az adott azonosítóval",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Felhasználók"
+                ],
+                "summary": "Felhasználó törlése",
+                "description": "Felhasználó törlése azonosító alapján",
+                "operationId": "fa56cffde745d3f152f95cbacd936c0b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "A felhasználó azonosítója",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sikeres törlés esetén a törlés visszaigazolása",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Nem található felhasználó az adott azonosítóval",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/username/{username}": {
+            "get": {
+                "tags": [
+                    "Felhasználók"
+                ],
+                "summary": "Felhasználó megkeresése a felhasználónév alapján",
+                "description": "Felhasználó megkeresése a felhasználónév alapján",
+                "operationId": "2bf6197692bfd0bfa60a73182f17e4b9",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "description": "A felhasználó felhasználóneve",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sikeres lekérés esetén a felhasználó adatai",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "username": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "city": {
+                                            "type": "string"
+                                        },
+                                        "password": {
+                                            "type": "string"
+                                        },
+                                        "profilePictureURL": {
+                                            "type": "string"
+                                        },
+                                        "verificationToken": {
+                                            "type": "string"
+                                        },
+                                        "isVerified": {
+                                            "type": "boolean"
+                                        },
+                                        "passwordResetToken": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Nem található felhasználó az adott felhasználónévvel",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -3,9 +3,10 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DumpController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\ParticipantController;
 use App\Http\Controllers\PasswordController;
-use App\Http\Controllers\ProfilePictureController;
+use App\Http\Controllers\PictureController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -45,8 +46,6 @@ Route::get('/participants/check/{eventId}/{userId}', [ParticipantController::cla
 
 Route::delete('/participants/delete/{eventId}/{userId}', [ParticipantController::class, 'destroy']);
 
-Route::patch('/events/{event}/participant-left', [EventController::class, 'decrementParticipants']);
-
 Route::get('/users/username/{username}', [UserController::class, 'getUserByUsername']);
 
 Route::get('/event/most-participants', [EventController::class, 'getEventWithMostParticipants']);
@@ -55,7 +54,7 @@ Route::get('/event/latest', [EventController::class, 'getLatestEvent']);
 
 Route::get('/event/closest', [EventController::class, 'getClosestEvent']);;
 
-Route::post('/upload/{userId}', [ProfilePictureController::class, 'upload']);
+Route::post('/upload-profile-picture/{userId}', [PictureController::class, 'uploadProfilePicture']);
 
 Route::get('/dump/name/{dumpId}', [DumpController::class, 'getDumpNameById']);
 
@@ -66,3 +65,7 @@ Route::post('/reset-password', [PasswordController::class, 'resetPassword'])->na
 Route::get('/user/password-reset-token/{token}', [PasswordController::class, 'getUserByResetToken']);
 
 Route::get('/participants/event/{eventId}', [ParticipantController::class, 'getParticipantsByEventId']);
+
+Route::get('/profile-deletion-email/{userId}', [MailController::class, 'sendProfileDeletionCodeEmail'])->name('profile.deletion');
+
+Route::post('/verify-deletion-code', [UserController::class, 'verifyDeletion']);
