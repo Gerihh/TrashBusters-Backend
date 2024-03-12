@@ -9,31 +9,113 @@ use Illuminate\Support\Facades\Validator;
 class ParticipantController extends Controller
 {
 
-    public function store(Request $request)
-    {
-        $participant = Participant::create($request->all());
-        return response()->json($participant, 201);
+    /**
+ * @OA\Post(
+ *     path="/api/participants",
+ *     summary="Résztvevő kapcsolat",
+ *     description="Új résztvevő kapcsolat létrehozása",
+ *     tags={"Résztvevők"},
+ *     @OA\RequestBody(
+ *         required=true,
+ *         description="",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="eventId", type="integer"),
+ *             @OA\Property(property="userId", type="integer"),
+ *         ),
+ *     ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="Résztvevő kapcsolat létrehozva",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="id", type="integer"),
+ *         ),
+ *     ),
+ *     @OA\Response(
+ *         response=422,
+ *         description="Hibás adatok",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="error", type="string"),
+ *             @OA\Property(property="errors", type="object"),
+ *         ),
+ *     ),
+ * )
+ */
+public function store(Request $request)
+{
+    $participant = Participant::create($request->all());
+    return response()->json($participant, 201);
+}
+
+
+    /**
+ * @OA\Delete(
+ *     path="/api/participants/{eventId}/{userId}",
+ *     summary="Résztvevő kapcsolat törlése",
+ *     description="Résztvevő kapcsolat törlése",
+ *     tags={"Résztvevők"},
+ *     @OA\Parameter(
+ *         name="eventId",
+ *         in="path",
+ *         required=true,
+ *         description="Esemény azonosítója",
+ *         @OA\Schema(type="integer"),
+ *     ),
+ *     @OA\Parameter(
+ *         name="userId",
+ *         in="path",
+ *         required=true,
+ *         description="Felhasználó azonosítója",
+ *         @OA\Schema(type="integer"),
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="message", type="string"),
+ *         ),
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Résztvevő kapcsolat nem található",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="error", type="string"),
+ *         ),
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Hiba történt a résztvevő kapcsolat törlése közben",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="error", type="string"),
+ *         ),
+ *     ),
+ * )
+ */
+public function destroy($eventId, $userId)
+{
+    $participant = Participant::where([
+        'eventId' => $eventId,
+        'userId' => $userId,
+    ])->first();
+
+    if ($participant === null) {
+        return response()->json(['error' => 'Participant not found'], 404);
     }
 
-    public function destroy($eventId, $userId)
-    {
-        $participant = Participant::where([
-            'eventId' => $eventId,
-            'userId' => $userId,
-        ]);
+    $deleted = $participant->delete();
 
-        if ($participant === null) {
-            return response()->json(['message' => 'Participant not found'], 404);
-        }
-
-        $deleted = $participant->delete();
-
-        if ($deleted) {
-            return response()->json(['message' => 'Participant deleted successfully'], 200);
-        } else {
-            return response()->json(['message' => 'Failed to delete participant'], 500);
-        }
+    if ($deleted) {
+        return response()->json(['error' => 'Participant deleted successfully'], 200);
+    } else {
+        return response()->json(['error' => 'Failed to delete participant'], 500);
     }
+}
+
     /**
      * @OA\Get(
      *     path="/api/event/participants/{eventId}",

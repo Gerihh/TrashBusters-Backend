@@ -38,11 +38,54 @@ class DumpController extends Controller
         return response()->json($dumps);
     }
 
-    public function store(Request $request)
-    {
-        $dump = Dump::create($request->all());
-        return response()->json($dump, 201);
-    }
+    /**
+ * @OA\Post(
+ *     path="/api/dumps",
+ *     summary="Lerakó létrehozása",
+ *     description="Új lerakó létrehozása",
+ *     tags={"Lerakók"},
+ *     @OA\RequestBody(
+ *         required=true,
+ *         description="Lerakó adatai",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="name", type="string"),
+ *             @OA\Property(property="description", type="string"),
+ *             @OA\Property(property="location", type="string"),
+ *             @OA\Property(property="contactPhone", type="string"),
+ *             @OA\Property(property="contactEmail", type="string"),
+ *         ),
+ *     ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="Sikeres létrehozás",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="id", type="integer"),
+ *             @OA\Property(property="name", type="string"),
+ *             @OA\Property(property="description", type="string"),
+ *             @OA\Property(property="location", type="string"),
+ *             @OA\Property(property="contactPhone", type="string"),
+ *             @OA\Property(property="contactEmail", type="string"),
+ *         ),
+ *     ),
+ *     @OA\Response(
+ *         response=422,
+ *         description="Érvénytelen adatok",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="message", type="string"),
+ *             @OA\Property(property="errors", type="object"),
+ *         ),
+ *     ),
+ * )
+ */
+public function store(Request $request)
+{
+    $dump = Dump::create($request->all());
+    return response()->json($dump, 201);
+}
+
 
     public function destroy(Dump $dump)
     {
