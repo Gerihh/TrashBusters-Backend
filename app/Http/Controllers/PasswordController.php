@@ -33,7 +33,6 @@ class PasswordController extends Controller
             );
 
             if ($validator->fails()) {
-                // Validation failed
                 return response()->json(['error' => $validator->errors()->first()], 400);
             }
 
