@@ -101,7 +101,7 @@ public function destroy($eventId, $userId)
     $participant = Participant::where([
         'eventId' => $eventId,
         'userId' => $userId,
-    ])->first();
+    ]);
 
     if ($participant === null) {
         return response()->json(['error' => 'Participant not found'], 404);
