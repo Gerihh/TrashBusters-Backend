@@ -1,0 +1,2 @@
+1. Terminálba composer install --ignore-platform-reqs parancs
+2. Terminálba php artisan serve (szerver indítása)

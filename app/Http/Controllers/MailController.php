@@ -26,7 +26,7 @@ class MailController extends Controller
         if ($user) {
             $user->update(['isVerified' => true, 'verificationToken' => null]);
 
-            $redirectUrl = $URL . ':9000/#/login';
+            $redirectUrl = $URL . ':8100';
 
             return redirect()->away($redirectUrl);
         } else {
@@ -47,7 +47,7 @@ class MailController extends Controller
         $user = User::where('passwordResetToken', $token)->first();
         $URL = env('APP_URL');
         if ($user) {
-            $redirectUrl = $URL . ':9000/#/password-recovery/'. $user->passwordResetToken;
+            $redirectUrl = $URL . ':8100/recovery/'. $user->passwordResetToken;
             return redirect()->away($redirectUrl);
         } else {
             return view('email-verification.invalid');
